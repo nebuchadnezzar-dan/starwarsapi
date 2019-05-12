@@ -1,0 +1,57 @@
+.card {
+  padding: 0.5rem 1rem;
+  text-align: center;
+  display: inline-block;
+  background-color: rgba(255, 255, 255, 0.2);
+  margin: 0.2rem;
+  overflow: hidden;
+}
+
+.profile {
+  position: relative;
+  transition: all 1s;
+}
+
+.info {
+  position: absolute;
+  top: 0;
+  left: 0;
+  visibility: hidden;
+  opacity: 0;
+  margin-top: 2rem;
+  transition: all 0.5s;
+  z-index: 2;
+}
+
+.info p {
+  font-size: 1.8rem;
+  color: #fff;
+  padding: 0.3rem 0.6rem;
+  margin: 0.4rem auto;
+  text-transform: uppercase;
+}
+
+.info p span {
+  color: #fff200;
+}
+
+.profile:hover .info {
+  visibility: visible;
+  opacity: 1;
+}
+
+.profile:hover img {
+  /* filter: blur(0.3rem); */
+  filter: brightness(0.5);
+  transform: scale(1.4);
+}
+
+h3 {
+  font-size: 2rem;
+  color: #fff200;
+}
+
+img {
+  width: 29.5rem;
+  transition: all 0.4s;
+}

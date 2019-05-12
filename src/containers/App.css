@@ -1,0 +1,20 @@
+.container {
+  max-width: 120rem;
+  margin: 0 auto;
+}
+
+.content {
+  display: flex;
+}
+.gallery {
+  flex: 1;
+}
+
+.particles {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: -1;
+}
