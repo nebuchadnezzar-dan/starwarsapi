@@ -27,8 +27,8 @@ li:hover::before {
   transform: scaleY(1);
 }
 
-li:active {
-  background-color: #fffa65;
+.active {
+  background-color: #e6d900;
 }
 
 li {
