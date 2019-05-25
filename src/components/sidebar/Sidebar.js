@@ -12,19 +12,20 @@ const Sidebar = ({ onClicked, active }) => {
           <p
             className="nav-link people"
             data-url="https://swapi.co/api/people/"
+            data-active="people"
           >
             <People className="nav-icon" />
             <span>People</span>
           </p>
         </li>
         <li>
-          <p className="nav-link species" data-url="2">
+          <p className="nav-link species" data-url="2" data-active="species">
             <Species className="nav-icon" />
             <span>Species</span>
           </p>
         </li>
         <li>
-          <p className="nav-link planets" data-url="3">
+          <p className="nav-link planets" data-url="3" data-active="planets">
             <Planets className="nav-icon" />
             <span>Planets</span>
           </p>
