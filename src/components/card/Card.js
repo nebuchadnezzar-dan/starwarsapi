@@ -11,7 +11,8 @@ const Card = ({
   gender,
   birthYear,
   homeWorld,
-  species
+  species,
+  onDisplay
 }) => {
   return (
     <div className="card">
@@ -39,9 +40,15 @@ const Card = ({
             homeworld: <span>{homeWorld}</span>
           </p>
         </div>
-        <img src={`https://robohash.org/${id}?set=set4`} alt="profile" />
+        <img src={`https://robohash.org/${name}?set=set4`} alt="profile" />
         <div className="description">
-          <h3>{name}</h3>
+          <h3
+            onClick={() => {
+              onDisplay(id);
+            }}
+          >
+            {name}
+          </h3>
         </div>
       </div>
     </div>

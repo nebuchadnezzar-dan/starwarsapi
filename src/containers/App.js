@@ -3,6 +3,7 @@ import Gallery from '../components/gallery/Gallery';
 import Sidebar from '../components/sidebar/Sidebar';
 import Particles from 'react-particles-js';
 import Search from '../components/searchbar/Search';
+import Display from '../components/display/Display';
 import './App.css';
 import { particleOptions } from './particleOps';
 
@@ -15,7 +16,6 @@ const fetchData = async url => {
     console.log(err);
   }
 };
-
 class App extends Component {
   constructor() {
     super();
@@ -26,6 +26,7 @@ class App extends Component {
       previous: '',
       isEmpty: true,
       active: '',
+      dispPerson: '',
       loading: false
     };
   }
@@ -45,7 +46,6 @@ class App extends Component {
       url = closest.closest('.btn-previous').dataset.url;
       active = closest.closest('.btn-previous').dataset.active;
     }
-    console.log(url);
     this.setState({ loading: true, isEmpty: false });
     const returnedData = await fetchData(url);
     this.setState({
@@ -56,7 +56,11 @@ class App extends Component {
       loading: false,
       active: active
     });
-    console.log(returnedData);
+  };
+
+  onDisplay = idp => {
+    const person = this.state.people[idp];
+    this.setState({ dispPerson: person });
   };
 
   onSearch = event => {
@@ -67,12 +71,26 @@ class App extends Component {
   };
 
   render() {
-    const { isEmpty, people, active, loading, next, previous } = this.state;
+    const {
+      isEmpty,
+      people,
+      active,
+      loading,
+      next,
+      previous,
+      dispPerson
+    } = this.state;
     return (
       <div>
         <Particles className="particles" params={particleOptions} />
         <div className="container">
-          <Search onSearch={this.onSearch} />
+          <Search
+            onSearch={this.onSearch}
+            next={next}
+            active={active}
+            previous={previous}
+            onClicked={this.onClickApi}
+          />
           <div className="content">
             <Sidebar onClicked={this.onClickApi} active={active} />
             <Gallery
@@ -81,9 +99,12 @@ class App extends Component {
               next={next}
               active={active}
               previous={previous}
-              onClicked={this.onClickApi}
               loading={loading}
-            />
+              onDisplay={this.onDisplay}
+              dispPerson={dispPerson}
+            >
+              <Display dispPerson={dispPerson} />
+            </Gallery>
           </div>
         </div>
       </div>

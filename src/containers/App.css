@@ -8,6 +8,7 @@
 }
 .gallery {
   flex: 1;
+  margin-top: 0.1rem;
 }
 
 .particles {

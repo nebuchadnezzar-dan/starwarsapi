@@ -1,5 +1,6 @@
 import React from 'react';
 import Card from '../card/Card';
+// import Display from '../display/Display';
 import './gallery.css';
 
 const Gallery = ({
@@ -9,14 +10,17 @@ const Gallery = ({
   previous,
   onClicked,
   loading,
-  active
+  active,
+  onDisplay,
+  children
 }) => {
+  // console.log(children);
   return (
     <div className="gallery">
       {isEmpty ? (
         ''
       ) : (
-        <div>
+        <div className="galleryContainer">
           {' '}
           {loading ? (
             <div className="lds-ripple">
@@ -37,35 +41,14 @@ const Gallery = ({
                 birthYear={person.birth_year}
                 homeWorld={person.homeworld}
                 species={person.species}
+                onDisplay={onDisplay}
               />
             ))
           )}
-          {previous ? (
-            <button
-              onClick={onClicked}
-              data-url={previous}
-              data-active={active}
-              className="btn btn-previous"
-            >
-              Previous
-            </button>
-          ) : (
-            ''
-          )}
-          {next ? (
-            <button
-              onClick={onClicked}
-              data-url={next}
-              data-active={active}
-              className="btn btn-next"
-            >
-              Next
-            </button>
-          ) : (
-            ''
-          )}
         </div>
       )}
+      {children}
+      {/* {disPerson ? <Display /> : ''} */}
     </div>
   );
 };
