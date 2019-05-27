@@ -1,6 +1,6 @@
 import React from 'react';
 import Card from '../card/Card';
-// import Display from '../display/Display';
+import List from '../list/List';
 import './gallery.css';
 
 const Gallery = ({
@@ -12,9 +12,32 @@ const Gallery = ({
   loading,
   active,
   onDisplay,
-  children
+  children,
+  species
 }) => {
-  // console.log(children);
+  let finalOutput = '';
+  if (active === 'people') {
+    finalOutput = people.map((person, i) => (
+      <Card
+        key={i}
+        id={i}
+        name={person.name}
+        height={person.height}
+        mass={person.mass}
+        hairColor={person.hair_color}
+        skinColor={person.hair_color}
+        gender={person.gender}
+        birthYear={person.birth_year}
+        homeWorld={person.homeworld}
+        species={person.species}
+        onDisplay={onDisplay}
+      />
+    ));
+  } else if (active === 'species') {
+    finalOutput = species.map((spec, i) => (
+      <List key={i} id={i} name={spec.name} onDisplay={onDisplay} />
+    ));
+  }
   return (
     <div className="gallery">
       {isEmpty ? (
@@ -28,27 +51,11 @@ const Gallery = ({
               <div />
             </div>
           ) : (
-            people.map((person, i) => (
-              <Card
-                key={i}
-                id={i}
-                name={person.name}
-                height={person.height}
-                mass={person.mass}
-                hairColor={person.hair_color}
-                skinColor={person.hair_color}
-                gender={person.gender}
-                birthYear={person.birth_year}
-                homeWorld={person.homeworld}
-                species={person.species}
-                onDisplay={onDisplay}
-              />
-            ))
+            finalOutput
           )}
         </div>
       )}
       {children}
-      {/* {disPerson ? <Display /> : ''} */}
     </div>
   );
 };

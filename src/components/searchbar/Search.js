@@ -1,13 +1,14 @@
 import React from 'react';
 import './search.css';
-import logo from '../../img/Star.png';
+import { ReactComponent as Logo } from '../../img/SVG/icons8-darth-vader.svg';
 
 const Search = ({ onSearch, onClicked, next, previous, active }) => {
   return (
     <div>
       <div className="searchContainer">
         <div className="logo">
-          <img src={logo} alt="logo_head" />
+          <Logo className="logo-icon" />
+          <p>Star Wars Wiki</p>
         </div>
         <input
           type="text"

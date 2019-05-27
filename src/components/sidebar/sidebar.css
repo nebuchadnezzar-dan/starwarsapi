@@ -4,6 +4,7 @@
   display: flex;
   flex-direction: column;
   height: 88.7vh;
+  justify-content: space-between;
 }
 
 li:not(:last-child) {
@@ -62,4 +63,15 @@ li {
   align-items: center;
   position: relative;
   z-index: 10;
+}
+
+.footer {
+  font-size: 1.6rem;
+  padding: 1rem 3rem;
+  text-align: center;
+}
+
+.footer a {
+  color: #fff;
+  text-decoration: none;
 }

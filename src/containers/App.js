@@ -16,17 +16,21 @@ const fetchData = async url => {
     console.log(err);
   }
 };
+
 class App extends Component {
   constructor() {
     super();
     this.state = {
-      people: '',
-      searchPeople: '',
+      people: [],
+      searchPeople: [],
+      searchSpecie: [],
+      species: [],
       next: '',
       previous: '',
       isEmpty: true,
       active: '',
       dispPerson: '',
+      dispSpecie: '',
       loading: false
     };
   }
@@ -39,6 +43,9 @@ class App extends Component {
     if (closest.closest('.people')) {
       url = closest.closest('.people').dataset.url;
       active = closest.closest('.people').dataset.active;
+    } else if (closest.closest('.species')) {
+      url = closest.closest('.species').dataset.url;
+      active = closest.closest('.species').dataset.active;
     } else if (closest.closest('.btn-next')) {
       url = closest.closest('.btn-next').dataset.url;
       active = closest.closest('.btn-next').dataset.active;
@@ -49,25 +56,57 @@ class App extends Component {
     this.setState({ loading: true, isEmpty: false });
     const returnedData = await fetchData(url);
     this.setState({
-      people: returnedData.results,
       next: returnedData.next,
       previous: returnedData.previous,
-      searchPeople: returnedData.results,
       loading: false,
       active: active
     });
+    this.onSetState(returnedData, active);
   };
 
-  onDisplay = idp => {
-    const person = this.state.people[idp];
-    this.setState({ dispPerson: person });
+  onSetState = (data, active) => {
+    if (active === 'people') {
+      this.setState({
+        people: data.results,
+        searchPeople: data.results,
+        searchSpecie: [],
+        species: [],
+        dispSpecie: ''
+      });
+    } else if (active === 'species') {
+      this.setState({
+        species: data.results,
+        searchSpecie: data.results,
+        searchPeople: [],
+        people: [],
+        dispPerson: ''
+      });
+    }
+  };
+
+  onDisplay = id => {
+    if (this.state.active === 'people') {
+      const person = this.state.people[id];
+      this.setState({ dispPerson: person });
+    } else if (this.state.active === 'species') {
+      const specie = this.state.species[id];
+      this.setState({ dispSpecie: specie });
+    }
   };
 
   onSearch = event => {
-    const filtered = this.state.searchPeople.filter(el => {
-      return el.name.toLowerCase().includes(event.target.value.toLowerCase());
-    });
-    this.setState({ people: filtered });
+    let filtered;
+    if (this.state.active === 'people') {
+      filtered = this.state.searchPeople.filter(el => {
+        return el.name.toLowerCase().includes(event.target.value.toLowerCase());
+      });
+      this.setState({ people: filtered });
+    } else if (this.state.active === 'species') {
+      filtered = this.state.searchSpecie.filter(el => {
+        return el.name.toLowerCase().includes(event.target.value.toLowerCase());
+      });
+      this.setState({ species: filtered });
+    }
   };
 
   render() {
@@ -78,7 +117,9 @@ class App extends Component {
       loading,
       next,
       previous,
-      dispPerson
+      dispPerson,
+      species,
+      dispSpecie
     } = this.state;
     return (
       <div>
@@ -96,14 +137,18 @@ class App extends Component {
             <Gallery
               isEmpty={isEmpty}
               people={people}
+              species={species}
               next={next}
               active={active}
               previous={previous}
               loading={loading}
               onDisplay={this.onDisplay}
-              dispPerson={dispPerson}
             >
-              <Display dispPerson={dispPerson} />
+              <Display
+                dispPerson={dispPerson}
+                dispSpecie={dispSpecie}
+                active={active}
+              />
             </Gallery>
           </div>
         </div>

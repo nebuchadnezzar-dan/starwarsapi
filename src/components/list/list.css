@@ -1,0 +1,45 @@
+.listContainer {
+  color: #fff;
+  font-size: 2rem;
+  padding: 1rem 2.5rem;
+  cursor: pointer;
+  margin: 0.3rem 0;
+  margin-left: 0.1rem;
+  display: flex;
+  align-items: center;
+}
+
+.listContainer p {
+  transition: all 0.3s;
+  font-weight: 300;
+}
+
+.listContainer p:hover {
+  font-size: 2.2rem;
+  font-weight: 400;
+}
+
+.specie-img {
+  height: 3rem;
+  width: auto;
+  margin-right: 1rem;
+}
+
+.even {
+  background-color: rgba(255, 242, 0, 0.1);
+  transition: all 0.2s;
+  color: #e6d900;
+}
+
+.even:hover {
+  background-color: #e6d900;
+  color: #fff;
+}
+
+.odd {
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+.odd:hover {
+  background-color: #888888;
+}

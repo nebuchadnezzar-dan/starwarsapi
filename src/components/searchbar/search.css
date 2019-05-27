@@ -1,10 +1,15 @@
 .searchContainer {
   display: flex;
   flex: 1;
-  padding: 0 3rem;
+  padding: 0.4rem 3rem;
   background: #fff200;
   justify-content: space-between;
   align-items: center;
+}
+
+.logo-icon {
+  height: 5rem;
+  width: auto;
 }
 
 .searchInput {
@@ -37,7 +42,6 @@
   color: #fff;
 }
 
-.logo img {
-  height: 7.2rem;
-  width: auto;
+.logo {
+  text-align: center;
 }
