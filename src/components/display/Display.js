@@ -1,7 +1,18 @@
 import React from 'react';
 import './display.css';
 
-const Display = ({ dispPerson, dispSpecie, active }) => {
+const Display = ({
+  dispPerson,
+  dispSpecie,
+  dispPlanet,
+  active,
+  personSpecie,
+  personHomeWorld,
+  speciesHomeWorld,
+  planetResidents,
+  dispLoading
+}) => {
+  console.log(planetResidents);
   const {
     height,
     mass,
@@ -9,8 +20,7 @@ const Display = ({ dispPerson, dispSpecie, active }) => {
     skin_color,
     eye_color,
     birth_year,
-    gender,
-    species
+    gender
   } = dispPerson;
   const {
     average_height,
@@ -22,10 +32,23 @@ const Display = ({ dispPerson, dispSpecie, active }) => {
     language,
     skin_colors
   } = dispSpecie;
-  let name, homeworld, finalOutPut;
-  if (active === 'people') {
+  const {
+    rotation_period,
+    orbital_period,
+    diameter,
+    climate,
+    gravity,
+    terrain,
+    surface_water,
+    population
+  } = dispPlanet;
+  let name, homeworld, finalOutPut, specs, residents;
+  if (dispLoading) {
+    finalOutPut = '';
+  } else if (active === 'people' && dispLoading === false) {
+    specs = personSpecie;
     name = dispPerson.name;
-    homeworld = dispPerson.homeworld;
+    homeworld = personHomeWorld;
     finalOutPut = (
       <div className="dispContainer">
         <figure className="dispContImg">
@@ -52,10 +75,10 @@ const Display = ({ dispPerson, dispSpecie, active }) => {
             hair color: <span>{hair_color}</span>
           </p>
           <p>
-            skinColor: <span>{skin_color}</span>
+            skin Color: <span>{skin_color}</span>
           </p>
           <p>
-            species: <span>{species}</span>
+            species: <span>{specs}</span>
           </p>
           <p>
             homeworld: <span>{homeworld}</span>
@@ -63,9 +86,9 @@ const Display = ({ dispPerson, dispSpecie, active }) => {
         </div>
       </div>
     );
-  } else if (active === 'species') {
+  } else if (active === 'species' && dispLoading === false) {
     name = dispSpecie.name;
-    homeworld = dispSpecie.homeworld;
+    homeworld = speciesHomeWorld;
     finalOutPut = (
       <div className="dispContainer">
         <figure className="dispContImg">
@@ -86,7 +109,7 @@ const Display = ({ dispPerson, dispSpecie, active }) => {
             designation: <span>{designation}</span>
           </p>
           <p>
-            eye_colors: <span>{eye_colors}</span>
+            eye colors: <span>{eye_colors}</span>
           </p>
           <p>
             hair colors: <span>{hair_colors}</span>
@@ -103,11 +126,60 @@ const Display = ({ dispPerson, dispSpecie, active }) => {
         </div>
       </div>
     );
+  } else if (active === 'planets' && dispLoading === false) {
+    name = dispPlanet.name;
+    residents = planetResidents;
+    finalOutPut = (
+      <div className="dispContainer">
+        <figure className="dispContImg">
+          <img src={`https://robohash.org/${name}?set=set2`} alt="profile" />
+          <figcaption>{name}</figcaption>
+        </figure>
+        <div className="dispContInfo">
+          <p>
+            rotation period: <span>{rotation_period}</span>
+          </p>
+          <p>
+            orbital period: <span>{orbital_period}</span>
+          </p>
+          <p>
+            diameter: <span>{diameter}</span>
+          </p>
+          <p>
+            climate: <span>{climate}</span>
+          </p>
+          <p>
+            gravity: <span>{gravity}</span>
+          </p>
+          <p>
+            terrain: <span>{terrain}</span>
+          </p>
+          <p>
+            surface water: <span>{surface_water}</span>
+          </p>
+          <p>
+            population: <span>{population}</span>
+          </p>
+          <p>
+            residents: <span>{residents.map(el => el)}</span>
+          </p>
+        </div>
+      </div>
+    );
   }
-  return dispPerson || dispSpecie ? (
-    <div className="display">{finalOutPut}</div>
+  return dispLoading ? (
+    <div className="lds-ripple">
+      <div />
+      <div />
+    </div>
   ) : (
-    ''
+    <div
+      className={
+        dispPlanet || dispPerson || dispSpecie ? 'display' : 'displayLoading'
+      }
+    >
+      {dispPerson || dispSpecie || dispPlanet ? finalOutPut : ''}
+    </div>
   );
 };
 

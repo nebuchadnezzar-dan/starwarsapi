@@ -1,0 +1,104 @@
+.badge-cont {
+  display: inline-flex;
+}
+
+.badge {
+  display: inline-flex;
+  perspective: 100rem;
+  height: 26rem;
+  width: 26rem;
+  margin: 2.8rem;
+  position: relative;
+}
+
+.badge:hover .badge-container--front {
+  transform: rotateY(-180deg);
+}
+
+.badge:hover .badge-container--back {
+  transform: rotateY(0);
+}
+
+.badge-container--front {
+  background-color: rgba(255, 255, 255, 0.2);
+  display: inline-block;
+  padding: 0.5rem 1rem;
+  text-align: center;
+  border-radius: 50%;
+  overflow: hidden;
+  position: relative;
+}
+
+.badge-side {
+  -webkit-transition: all 0.8s ease;
+  transition: all 0.8s ease;
+  height: 26rem;
+  width: 26rem;
+  position: absolute;
+  top: 0;
+  left: 0;
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+  overflow: hidden;
+}
+
+.badge-container--back {
+  background-color: rgba(255, 242, 0, 0.3);
+  display: inline-block;
+  padding: 0.5rem 1rem;
+  text-align: center;
+  border-radius: 50%;
+  overflow: hidden;
+  transform: rotateY(180deg);
+  position: relative;
+}
+
+.planet-info {
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.planet-info:hover {
+  color: #fff200;
+}
+
+.planet-info p:hover {
+  font-weight: 100;
+}
+
+.planet-info p {
+  font-size: 1.5rem;
+  text-transform: capitalize;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  transition: all 0.2s;
+}
+
+.badge-image {
+  height: 25rem;
+  width: auto;
+}
+
+.badge-image-back {
+  height: 25rem;
+  width: auto;
+  filter: brightness(0.5);
+  opacity: 0.2;
+}
+
+.badge-text {
+  cursor: pointer;
+  font-size: 1.8rem;
+  font-weight: bold;
+  color: #fff200;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.planet-info {
+  color: #fff;
+}

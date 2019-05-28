@@ -6,12 +6,10 @@ const Card = ({
   name,
   height,
   mass,
-  hair_color,
+  hairColor,
   skinColor,
   gender,
   birthYear,
-  homeWorld,
-  species,
   onDisplay
 }) => {
   return (
@@ -28,16 +26,10 @@ const Card = ({
             mass: <span>{mass}</span>
           </p>
           <p>
-            hair color: <span>{hair_color}</span>
+            hair color: <span>{hairColor}</span>
           </p>
           <p>
             skinColor: <span>{skinColor}</span>
-          </p>
-          <p>
-            species: <span>{species}</span>
-          </p>
-          <p>
-            homeworld: <span>{homeWorld}</span>
           </p>
         </div>
         <img src={`https://robohash.org/${name}?set=set4`} alt="profile" />

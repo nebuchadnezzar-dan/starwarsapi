@@ -30,7 +30,11 @@ const Sidebar = ({ onClicked, active }) => {
             </p>
           </li>
           <li className={active === 'planets' ? 'active' : ''}>
-            <p className="nav-link planets" data-url="3" data-active="planets">
+            <p
+              className="nav-link planets"
+              data-url="https://swapi.co/api/planets/"
+              data-active="planets"
+            >
               <Planets className="nav-icon" />
               <span>Planets</span>
             </p>

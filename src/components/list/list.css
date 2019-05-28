@@ -38,8 +38,10 @@
 
 .odd {
   background-color: rgba(255, 255, 255, 0.1);
+  transition: all 0.2s;
 }
 
 .odd:hover {
   background-color: #888888;
+  color: #e6d900;
 }

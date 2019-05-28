@@ -1,6 +1,7 @@
 import React from 'react';
 import Card from '../card/Card';
 import List from '../list/List';
+import Badge from '../badge/Badge';
 import './gallery.css';
 
 const Gallery = ({
@@ -13,7 +14,8 @@ const Gallery = ({
   active,
   onDisplay,
   children,
-  species
+  species,
+  planets
 }) => {
   let finalOutput = '';
   if (active === 'people') {
@@ -25,7 +27,7 @@ const Gallery = ({
         height={person.height}
         mass={person.mass}
         hairColor={person.hair_color}
-        skinColor={person.hair_color}
+        skinColor={person.skin_color}
         gender={person.gender}
         birthYear={person.birth_year}
         homeWorld={person.homeworld}
@@ -36,6 +38,19 @@ const Gallery = ({
   } else if (active === 'species') {
     finalOutput = species.map((spec, i) => (
       <List key={i} id={i} name={spec.name} onDisplay={onDisplay} />
+    ));
+  } else if (active === 'planets') {
+    finalOutput = planets.map((planet, i) => (
+      <Badge
+        key={i}
+        id={i}
+        name={planet.name}
+        diameter={planet.diameter}
+        climate={planet.climate}
+        terrain={planet.terrain}
+        population={planet.population}
+        onDisplay={onDisplay}
+      />
     ));
   }
   return (
