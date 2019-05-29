@@ -21,6 +21,11 @@
   height: 64px;
 }
 
+.error-text {
+  color: #fff;
+  font-size: 3rem;
+}
+
 .hide {
   display: none;
 }

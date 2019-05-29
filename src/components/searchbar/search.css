@@ -12,6 +12,19 @@
   width: auto;
 }
 
+.arrow-icon {
+  width: 1.6rem;
+  height: 1.6rem;
+  fill: currentColor;
+}
+.arrow-icon--right {
+  margin-left: 1rem;
+}
+
+.arrow-icon--left {
+  margin-right: 1rem;
+}
+
 .searchInput {
   width: 30%;
   padding: 1rem 1.5rem;
@@ -26,12 +39,24 @@
   width: 35%;
 }
 
+.page {
+  font-size: 1.6rem;
+  font-weight: 500;
+  color: #333333;
+  cursor: default;
+}
+
+.navButton {
+  display: flex;
+}
+
 .btn {
   cursor: pointer;
   font-size: 1.6rem;
   margin: 0 1rem;
   border: none;
-  display: inline-block;
+  display: flex;
+  align-items: center;
   padding-bottom: 0.5rem;
   border-bottom: 3px solid rgba(0, 0, 0, 0);
   transition: all 0.2s;

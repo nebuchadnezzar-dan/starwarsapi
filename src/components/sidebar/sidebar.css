@@ -58,10 +58,11 @@ li {
   color: #ffffff;
   text-transform: uppercase;
   display: block;
-  padding: 1.5rem 3rem;
+  padding: 1.5rem 6rem;
   display: flex;
   align-items: center;
   position: relative;
+  width: 100%;
   z-index: 10;
 }
 

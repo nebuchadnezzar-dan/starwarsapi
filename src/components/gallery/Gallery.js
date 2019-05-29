@@ -15,6 +15,7 @@ const Gallery = ({
   onDisplay,
   children,
   species,
+  failed,
   planets
 }) => {
   let finalOutput = '';
@@ -52,6 +53,12 @@ const Gallery = ({
         onDisplay={onDisplay}
       />
     ));
+  } else {
+    finalOutput = (
+      <div className="error">
+        <p className="error-text">Failed! please reload and try again</p>
+      </div>
+    );
   }
   return (
     <div className="gallery">

@@ -12,7 +12,7 @@ const Sidebar = ({ onClicked, active }) => {
           <li className={active === 'people' ? 'active' : ''}>
             <p
               className="nav-link people"
-              data-url="https://swapi.co/api/people/"
+              data-url="https://swapi.co/api/people/?page=1"
               data-active="people"
             >
               <People className="nav-icon" />
@@ -22,7 +22,7 @@ const Sidebar = ({ onClicked, active }) => {
           <li className={active === 'species' ? 'active' : ''}>
             <p
               className="nav-link species"
-              data-url="https://swapi.co/api/species/"
+              data-url="https://swapi.co/api/species/?page=1"
               data-active="species"
             >
               <Species className="nav-icon" />
@@ -32,7 +32,7 @@ const Sidebar = ({ onClicked, active }) => {
           <li className={active === 'planets' ? 'active' : ''}>
             <p
               className="nav-link planets"
-              data-url="https://swapi.co/api/planets/"
+              data-url="https://swapi.co/api/planets/?page=1"
               data-active="planets"
             >
               <Planets className="nav-icon" />

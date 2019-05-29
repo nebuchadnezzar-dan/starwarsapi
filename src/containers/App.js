@@ -14,13 +14,25 @@ const fetchData = async url => {
     return data;
   } catch (err) {
     console.log(err);
+    return 'error';
   }
 };
 
 const fetchAdditionalData = async specie => {
-  const results = await fetch(specie);
-  const data = await results.json();
-  return data.name;
+  try {
+    const results = await fetch(specie);
+    const data = await results.json();
+    return data.name;
+  } catch (err) {
+    console.log(err);
+    return 'error';
+  }
+};
+
+const asyncForEach = async (array, callback) => {
+  for (let index = 0; index < array.length; index++) {
+    await callback(array[index], index, array);
+  }
 };
 
 class App extends Component {
@@ -37,14 +49,16 @@ class App extends Component {
       personSpecie: '',
       personHomeWorld: '',
       speciesHomeWorld: '',
-      planetResidents: [],
+      planetResidents: '',
       next: '',
       previous: '',
+      page: '',
       isEmpty: true,
       active: '',
       dispPerson: '',
       dispSpecie: '',
       dispPlanet: '',
+      failed: false,
       loading: false,
       dispLoading: false
     };
@@ -73,13 +87,18 @@ class App extends Component {
     }
     this.setState({ loading: true, isEmpty: false });
     const returnedData = await fetchData(url);
-    this.setState({
-      next: returnedData.next,
-      previous: returnedData.previous,
-      loading: false,
-      active: active
-    });
-    this.onSetState(returnedData, active);
+    if (returnedData === 'error') {
+      this.setState({ failed: true, loading: false });
+    } else {
+      this.setState({
+        next: returnedData.next,
+        previous: returnedData.previous,
+        loading: false,
+        page: url.match(/\d/)[0],
+        active: active
+      });
+      this.onSetState(returnedData, active);
+    }
   };
 
   onSetState = (data, active) => {
@@ -136,11 +155,16 @@ class App extends Component {
       this.setState({ dispSpecie: specie, speciesHomeWorld: speciesHomeWorld });
     } else if (this.state.active === 'planets') {
       const planet = this.state.planets[id];
-      const planetsResidents = [];
-      await planet.residents.forEach(async res => {
-        planetsResidents.push(await fetchAdditionalData(res));
-      });
-      // console.log(planetsResidents);
+      let planetsResidents;
+      if (planet.residents.length > 0) {
+        const residentArray = [];
+        await asyncForEach(planet.residents, async num => {
+          residentArray.push(await fetchAdditionalData(num));
+        });
+        planetsResidents = residentArray;
+      } else {
+        planetsResidents = '';
+      }
       this.setState({ dispPlanet: planet, planetResidents: planetsResidents });
     }
     this.setState({ dispLoading: false });
@@ -173,6 +197,7 @@ class App extends Component {
       active,
       loading,
       next,
+      page,
       previous,
       dispPerson,
       species,
@@ -183,6 +208,7 @@ class App extends Component {
       planets,
       planetResidents,
       dispPlanet,
+      failed,
       dispLoading
     } = this.state;
     return (
@@ -195,6 +221,7 @@ class App extends Component {
             active={active}
             previous={previous}
             onClicked={this.onClickApi}
+            page={page}
           />
           <div className="content">
             <Sidebar onClicked={this.onClickApi} active={active} />
@@ -208,6 +235,7 @@ class App extends Component {
               previous={previous}
               loading={loading}
               onDisplay={this.onDisplay}
+              failed={failed}
             >
               <Display
                 dispPerson={dispPerson}

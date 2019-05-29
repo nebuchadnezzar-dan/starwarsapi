@@ -12,7 +12,6 @@ const Display = ({
   planetResidents,
   dispLoading
 }) => {
-  console.log(planetResidents);
   const {
     height,
     mass,
@@ -161,7 +160,14 @@ const Display = ({
             population: <span>{population}</span>
           </p>
           <p>
-            residents: <span>{residents.map(el => el)}</span>
+            residents:{' '}
+            <span>
+              {residents ? residents.map((el, i) => {if(i < residents.length -1){
+                return el + ', '
+              } else {
+                return el;
+              }}) : 'no one special'}
+            </span>
           </p>
         </div>
       </div>
