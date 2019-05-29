@@ -1,0 +1,21 @@
+{
+  "files": {
+    "main.css": "/starwarsapi/static/css/main.6991d2af.chunk.css",
+    "main.js": "/starwarsapi/static/js/main.11fd0646.chunk.js",
+    "main.js.map": "/starwarsapi/static/js/main.11fd0646.chunk.js.map",
+    "runtime~main.js": "/starwarsapi/static/js/runtime~main.a0f48d18.js",
+    "runtime~main.js.map": "/starwarsapi/static/js/runtime~main.a0f48d18.js.map",
+    "static/js/2.5f570e04.chunk.js": "/starwarsapi/static/js/2.5f570e04.chunk.js",
+    "static/js/2.5f570e04.chunk.js.map": "/starwarsapi/static/js/2.5f570e04.chunk.js.map",
+    "index.html": "/starwarsapi/index.html",
+    "precache-manifest.3104f3016277659cf44ddac9630b6d30.js": "/starwarsapi/precache-manifest.3104f3016277659cf44ddac9630b6d30.js",
+    "service-worker.js": "/starwarsapi/service-worker.js",
+    "static/css/main.6991d2af.chunk.css.map": "/starwarsapi/static/css/main.6991d2af.chunk.css.map",
+    "static/media/arrow-left2.8ea9f747.svg": "/starwarsapi/static/media/arrow-left2.8ea9f747.svg",
+    "static/media/arrow-right2.1188e2d3.svg": "/starwarsapi/static/media/arrow-right2.1188e2d3.svg",
+    "static/media/icons8-darth-vader.a95bb137.svg": "/starwarsapi/static/media/icons8-darth-vader.a95bb137.svg",
+    "static/media/make-group.49d9664d.svg": "/starwarsapi/static/media/make-group.49d9664d.svg",
+    "static/media/sphere.bc7637ea.svg": "/starwarsapi/static/media/sphere.bc7637ea.svg",
+    "static/media/user.9d577869.svg": "/starwarsapi/static/media/user.9d577869.svg"
+  }
+}
