@@ -9,6 +9,7 @@
 .gallery {
   flex: 1;
   margin-top: 0.1rem;
+  height: 100vh;
 }
 
 .particles {
@@ -18,4 +19,10 @@
   bottom: 0;
   left: 0;
   z-index: -1;
+}
+
+@media only screen and (max-width: 700px) {
+  .content {
+    flex-direction: column;
+  }
 }

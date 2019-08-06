@@ -102,3 +102,48 @@
 .planet-info {
   color: #fff;
 }
+
+@media only screen and (max-width: 1024px) {
+  .badge {
+    height: 34rem;
+    width: 34rem;
+  }
+  .badge-side {
+    height: 34rem;
+    width: 34rem;
+  }
+  .badge-image-back,
+  .badge-image {
+    height: 30rem;
+  }
+}
+
+@media only screen and (max-width: 768px) {
+  .badge {
+    height: 45rem;
+    width: 45rem;
+  }
+  .badge-side {
+    height: 45rem;
+    width: 45rem;
+  }
+  .badge-image-back,
+  .badge-image {
+    height: 37rem;
+  }
+}
+
+@media only screen and (max-width: 700px) {
+  .badge {
+    height: 45rem;
+    width: 45rem;
+  }
+  .badge-side {
+    height: 45rem;
+    width: 45rem;
+  }
+  .badge-image-back,
+  .badge-image {
+    height: 37rem;
+  }
+}

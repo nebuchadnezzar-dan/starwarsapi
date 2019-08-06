@@ -76,3 +76,50 @@ li {
   color: #fff;
   text-decoration: none;
 }
+
+.hideButton {
+  display: none;
+}
+
+.showButton {
+  display: none;
+}
+
+.hideNav {
+  display: none;
+}
+
+@media only screen and (min-width: 501px) {
+  .hideNav {
+    display: flex;
+  }
+  .null {
+    display: none;
+    height: 100%;
+  }
+  .navigation {
+    height: auto;
+  }
+}
+
+@media only screen and (max-width: 700px) {
+  .navigation {
+    height: 100%;
+  }
+  .hideButton {
+    margin-top: 1rem;
+    display: block;
+    cursor: pointer;
+  }
+
+  .showButton {
+    text-align: center;
+    font-size: 2rem;
+    color: #fff;
+    display: block;
+    cursor: pointer;
+  }
+  /* hr {
+    display: none;
+  } */
+}

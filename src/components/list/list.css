@@ -45,3 +45,9 @@
   background-color: #888888;
   color: #e6d900;
 }
+
+@media only screen and (max-width: 1024px) {
+  .specie-img {
+    height: 10rem;
+  }
+}
