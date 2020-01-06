@@ -11,6 +11,7 @@
     "react-dom": "^16.8.6",
     "react-particles-js": "^2.6.0",
     "react-scripts": "3.0.1",
+    "serialize-javascript": "^2.1.2",
     "set-value": "^3.0.1"
   },
   "scripts": {
