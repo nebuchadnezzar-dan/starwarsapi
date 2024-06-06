@@ -4,7 +4,7 @@
   "private": true,
   "dependencies": {
     "eslint-utils": "^1.4.3",
-    "gh-pages": "^2.2.0",
+    "gh-pages": "^5.0.0",
     "kind-of": "^6.0.3",
     "lodash": "^4.17.21",
     "minimist": "^1.2.5",
