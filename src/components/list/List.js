@@ -1,10 +1,10 @@
-import React from 'react';
-import './list.css';
+import React from "react";
+import "./list.css";
 
-const List = ({ id, name, onDisplay }) => {
+const List = ({ id, name, homeWorld, onDisplay }) => {
   return (
     <div className="list">
-      <div className={`listContainer ${id % 2 === 0 ? 'even' : 'odd'}`}>
+      <div className={`listContainer ${id % 2 === 0 ? "even" : "odd"}`}>
         <img
           src={`https://robohash.org/${name}?set=set3`}
           className="specie-img"
@@ -13,7 +13,7 @@ const List = ({ id, name, onDisplay }) => {
         <p
           data-nameid={id}
           onClick={() => {
-            onDisplay(id);
+            onDisplay(homeWorld, null, id);
           }}
         >
           {name}

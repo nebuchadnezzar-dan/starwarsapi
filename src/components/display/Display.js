@@ -14,11 +14,12 @@ const Display = ({
   dispLoading,
 }) => {
   const {
-    dispPerson,
+    activeId,
     personSpecie,
     people,
     dispStatus,
     active,
+    species,
     personHomeWorld,
   } = useApi();
   const {
@@ -30,7 +31,7 @@ const Display = ({
     birth_year,
     gender,
     name: personName,
-  } = { ...people.at(dispPerson) };
+  } = { ...people.at(activeId) };
   const {
     average_height,
     average_lifespan,
@@ -40,7 +41,8 @@ const Display = ({
     hair_colors,
     language,
     skin_colors,
-  } = dispSpecie;
+    name: specieName,
+  } = { ...species.at(activeId) };
   const {
     rotation_period,
     orbital_period,
@@ -51,7 +53,7 @@ const Display = ({
     surface_water,
     population,
   } = dispPlanet;
-  let name, homeworld, finalOutPut, residents;
+  let name, finalOutPut, residents;
   if (dispStatus === "loading") {
     finalOutPut = "";
   } else if (active === "people" && dispStatus === "fetched") {
@@ -98,14 +100,17 @@ const Display = ({
         </div>
       </div>
     );
-  } else if (active === "species" && dispLoading === false) {
-    name = dispSpecie.name;
-    homeworld = speciesHomeWorld;
+  } else if (active === "species" && dispStatus === "fetched") {
+    // name = dispSpecie.name;
+    // homeworld = speciesHomeWorld;
     finalOutPut = (
       <div className="dispContainer">
         <figure className="dispContImg">
-          <img src={`https://robohash.org/${name}?set=set3`} alt="profile" />
-          <figcaption>{name}</figcaption>
+          <img
+            src={`https://robohash.org/${specieName}?set=set3`}
+            alt="profile"
+          />
+          <figcaption>{specieName}</figcaption>
         </figure>
         <div className="dispContInfo">
           <p>
@@ -133,7 +138,7 @@ const Display = ({
             skin colors: <span>{skin_colors}</span>
           </p>
           <p>
-            homeworld: <span>{homeworld}</span>
+            homeworld: <span>{personHomeWorld}</span>
           </p>
         </div>
       </div>
@@ -198,7 +203,7 @@ const Display = ({
   ) : (
     <div
       className={
-        !(dispPlanet === null || dispPerson === null || dispSpecie === null)
+        !(dispPlanet === null || activeId === null || dispSpecie === null)
           ? "display"
           : "displayLoading"
       }

@@ -11,7 +11,7 @@ const initialState = {
   searchPlanets: [],
   species: [],
   planets: [],
-  dispPerson: null,
+  activeId: null,
   dispSpecie: null,
   dispPlanet: null,
   dispStatus: "idle",
@@ -46,7 +46,7 @@ function reducer(state, action) {
         };
       break;
     case "api/singleFetching":
-      return { ...state, dispStatus: "loading", dispPerson: action.payload };
+      return { ...state, dispStatus: "loading", activeId: action.payload };
     case "api/singleHomeWorldFetched":
       return {
         ...state,
@@ -59,6 +59,14 @@ function reducer(state, action) {
         ...state,
         dispStatus: "fetched",
         personSpecie: action.payload,
+      };
+    case "api/noFetchingNeeded":
+      return {
+        ...state,
+        dispStatus: "fetched",
+        activeId: action.payload,
+        personHomeWorld: "N/A",
+        personSpecie: "N/A",
       };
     default:
       return state;
@@ -76,7 +84,7 @@ function ApiProvider({ children }) {
       personSpecie,
       dispStatus,
       active,
-      dispPerson,
+      activeId,
     },
     dispatch,
   ] = useReducer(reducer, initialState);
@@ -91,7 +99,7 @@ function ApiProvider({ children }) {
         planets,
         personHomeWorld,
         dispStatus,
-        dispPerson,
+        activeId,
         personSpecie,
         active,
       }}

@@ -27,7 +27,8 @@ const Gallery = ({
     activePersonId
   ) {
     console.log(homeWorldUrl, speciesUrl, activePersonId);
-    if (homeWorldUrl.length > 0) {
+    dispatch({ type: "api/noFetchingNeeded", payload: activePersonId });
+    if (homeWorldUrl?.length > 0) {
       dispatch({ type: "api/singleFetching", payload: activePersonId });
       const returnedHomeWorld = await fetchData(homeWorldUrl);
       dispatch({
@@ -35,7 +36,7 @@ const Gallery = ({
         payload: returnedHomeWorld.name,
       });
     }
-    if (speciesUrl.length > 0) {
+    if (speciesUrl?.length > 0) {
       dispatch({ type: "api/singleFetching", payload: activePersonId });
       const returnedSpecies = await fetchData(speciesUrl);
       dispatch({
@@ -43,6 +44,7 @@ const Gallery = ({
         payload: returnedSpecies.name,
       });
     }
+
     // console.log(personHomeWorld);
   }
   let finalOutput = "";
@@ -65,7 +67,13 @@ const Gallery = ({
     ));
   } else if (active === "species") {
     finalOutput = species.map((spec, i) => (
-      <List key={i} id={i} name={spec.name} onDisplay={onDisplay} />
+      <List
+        key={i}
+        id={i}
+        name={spec.name}
+        homeWorld={spec.homeworld}
+        onDisplay={displaySingleHandler}
+      />
     ));
   } else if (active === "planets") {
     finalOutput = planets.map((planet, i) => (
