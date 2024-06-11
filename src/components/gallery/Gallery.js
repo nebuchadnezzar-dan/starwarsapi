@@ -4,6 +4,7 @@ import List from "../list/List";
 import Badge from "../badge/Badge";
 import "./gallery.css";
 import { useApi } from "../../contexts/ApiContext";
+import { fetchData } from "../../helpers/helpers";
 
 const Gallery = ({
   isEmpty,
@@ -19,7 +20,31 @@ const Gallery = ({
   failed,
   // planets,
 }) => {
-  const { people, species, planets, active, status } = useApi();
+  const { people, species, planets, active, status, dispatch } = useApi();
+  async function displaySingleHandler(
+    homeWorldUrl,
+    speciesUrl,
+    activePersonId
+  ) {
+    console.log(homeWorldUrl, speciesUrl, activePersonId);
+    if (homeWorldUrl.length > 0) {
+      dispatch({ type: "api/singleFetching", payload: activePersonId });
+      const returnedHomeWorld = await fetchData(homeWorldUrl);
+      dispatch({
+        type: "api/singleHomeWorldFetched",
+        payload: returnedHomeWorld.name,
+      });
+    }
+    if (speciesUrl.length > 0) {
+      dispatch({ type: "api/singleFetching", payload: activePersonId });
+      const returnedSpecies = await fetchData(speciesUrl);
+      dispatch({
+        type: "api/singleSpeciesFetched",
+        payload: returnedSpecies.name,
+      });
+    }
+    // console.log(personHomeWorld);
+  }
   let finalOutput = "";
   if (active === "people") {
     finalOutput = people.map((person, i) => (
@@ -35,7 +60,7 @@ const Gallery = ({
         birthYear={person.birth_year}
         homeWorld={person.homeworld}
         species={person.species}
-        onDisplay={onDisplay}
+        onDisplay={displaySingleHandler}
       />
     ));
   } else if (active === "species") {
@@ -80,7 +105,7 @@ const Gallery = ({
           )}
         </div>
       )}
-      {/* {children} */}
+      {children}
     </div>
   );
 };

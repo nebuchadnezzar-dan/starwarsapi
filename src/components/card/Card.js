@@ -1,5 +1,5 @@
-import React from 'react';
-import './card.css';
+import React from "react";
+import "./card.css";
 
 const Card = ({
   id,
@@ -8,9 +8,10 @@ const Card = ({
   mass,
   hairColor,
   skinColor,
-  gender,
   birthYear,
-  onDisplay
+  onDisplay,
+  species,
+  homeWorld,
 }) => {
   return (
     <div className="card">
@@ -36,7 +37,7 @@ const Card = ({
         <div className="description">
           <h3
             onClick={() => {
-              onDisplay(id);
+              onDisplay(homeWorld, species, id);
             }}
           >
             {name}

@@ -11,8 +11,12 @@ const initialState = {
   searchPlanets: [],
   species: [],
   planets: [],
-  dispSpecie: "",
-  dispPlanet: "",
+  dispPerson: null,
+  dispSpecie: null,
+  dispPlanet: null,
+  dispStatus: "idle",
+  personHomeWorld: "",
+  personSpecie: "",
 };
 function reducer(state, action) {
   switch (action.type) {
@@ -41,20 +45,56 @@ function reducer(state, action) {
           status: "fetched",
         };
       break;
+    case "api/singleFetching":
+      return { ...state, dispStatus: "loading", dispPerson: action.payload };
+    case "api/singleHomeWorldFetched":
+      return {
+        ...state,
+        dispStatus: "fetched",
+        personHomeWorld: action.payload,
+        personSpecie: "",
+      };
+    case "api/singleSpeciesFetched":
+      return {
+        ...state,
+        dispStatus: "fetched",
+        personSpecie: action.payload,
+      };
     default:
       return state;
   }
 }
 
 function ApiProvider({ children }) {
-  const [{ people, species, planets, status, active }, dispatch] = useReducer(
-    reducer,
-    initialState
-  );
+  const [
+    {
+      people,
+      species,
+      planets,
+      status,
+      personHomeWorld,
+      personSpecie,
+      dispStatus,
+      active,
+      dispPerson,
+    },
+    dispatch,
+  ] = useReducer(reducer, initialState);
 
   return (
     <ApiContext.Provider
-      value={{ people, status, dispatch, species, planets, active }}
+      value={{
+        people,
+        status,
+        dispatch,
+        species,
+        planets,
+        personHomeWorld,
+        dispStatus,
+        dispPerson,
+        personSpecie,
+        active,
+      }}
     >
       {children}
     </ApiContext.Provider>

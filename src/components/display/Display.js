@@ -1,17 +1,26 @@
-import React from 'react';
-import './display.css';
+import React from "react";
+import "./display.css";
+import { useApi } from "../../contexts/ApiContext";
 
 const Display = ({
-  dispPerson,
+  // dispPerson,
   dispSpecie,
   dispPlanet,
-  active,
-  personSpecie,
-  personHomeWorld,
+  // active,
+  // personSpecie,
+  // personHomeWorld,
   speciesHomeWorld,
   planetResidents,
-  dispLoading
+  dispLoading,
 }) => {
+  const {
+    dispPerson,
+    personSpecie,
+    people,
+    dispStatus,
+    active,
+    personHomeWorld,
+  } = useApi();
   const {
     height,
     mass,
@@ -19,8 +28,9 @@ const Display = ({
     skin_color,
     eye_color,
     birth_year,
-    gender
-  } = dispPerson;
+    gender,
+    name: personName,
+  } = { ...people.at(dispPerson) };
   const {
     average_height,
     average_lifespan,
@@ -29,7 +39,7 @@ const Display = ({
     eye_colors,
     hair_colors,
     language,
-    skin_colors
+    skin_colors,
   } = dispSpecie;
   const {
     rotation_period,
@@ -39,20 +49,23 @@ const Display = ({
     gravity,
     terrain,
     surface_water,
-    population
+    population,
   } = dispPlanet;
-  let name, homeworld, finalOutPut, specs, residents;
-  if (dispLoading) {
-    finalOutPut = '';
-  } else if (active === 'people' && dispLoading === false) {
-    specs = personSpecie;
-    name = dispPerson.name;
-    homeworld = personHomeWorld;
+  let name, homeworld, finalOutPut, residents;
+  if (dispStatus === "loading") {
+    finalOutPut = "";
+  } else if (active === "people" && dispStatus === "fetched") {
+    // specs = personSpecie;
+    // name = dispPerson.name;
+    // homeworld = personHomeWorld;
     finalOutPut = (
       <div className="dispContainer">
         <figure className="dispContImg">
-          <img src={`https://robohash.org/${name}?set=set4`} alt="profile" />
-          <figcaption>{name}</figcaption>
+          <img
+            src={`https://robohash.org/${personName}?set=set4`}
+            alt="profile"
+          />
+          <figcaption>{personName}</figcaption>
         </figure>
         <div className="dispContInfo">
           <p>
@@ -77,15 +90,15 @@ const Display = ({
             skin Color: <span>{skin_color}</span>
           </p>
           <p>
-            species: <span>{specs}</span>
+            species: <span>{personSpecie}</span>
           </p>
           <p>
-            homeworld: <span>{homeworld}</span>
+            homeworld: <span>{personHomeWorld}</span>
           </p>
         </div>
       </div>
     );
-  } else if (active === 'species' && dispLoading === false) {
+  } else if (active === "species" && dispLoading === false) {
     name = dispSpecie.name;
     homeworld = speciesHomeWorld;
     finalOutPut = (
@@ -125,7 +138,7 @@ const Display = ({
         </div>
       </div>
     );
-  } else if (active === 'planets' && dispLoading === false) {
+  } else if (active === "planets" && dispLoading === false) {
     name = dispPlanet.name;
     residents = planetResidents;
     finalOutPut = (
@@ -160,20 +173,24 @@ const Display = ({
             population: <span>{population}</span>
           </p>
           <p>
-            residents:{' '}
+            residents:{" "}
             <span>
-              {residents ? residents.map((el, i) => {if(i < residents.length -1){
-                return el + ', '
-              } else {
-                return el;
-              }}) : 'no one special'}
+              {residents
+                ? residents.map((el, i) => {
+                    if (i < residents.length - 1) {
+                      return el + ", ";
+                    } else {
+                      return el;
+                    }
+                  })
+                : "no one special"}
             </span>
           </p>
         </div>
       </div>
     );
   }
-  return dispLoading ? (
+  return dispStatus === "loading" ? (
     <div className="lds-ripple">
       <div />
       <div />
@@ -181,10 +198,12 @@ const Display = ({
   ) : (
     <div
       className={
-        dispPlanet || dispPerson || dispSpecie ? 'display' : 'displayLoading'
+        !(dispPlanet === null || dispPerson === null || dispSpecie === null)
+          ? "display"
+          : "displayLoading"
       }
     >
-      {dispPerson || dispSpecie || dispPlanet ? finalOutPut : ''}
+      {finalOutPut}
     </div>
   );
 };
