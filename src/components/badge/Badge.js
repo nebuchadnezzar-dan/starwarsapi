@@ -1,5 +1,5 @@
-import React from 'react';
-import './badge.css';
+import React from "react";
+import "./badge.css";
 
 const Badge = ({
   id,
@@ -8,7 +8,7 @@ const Badge = ({
   climate,
   terrain,
   population,
-  onDisplay
+  onDisplay,
 }) => {
   return (
     <div className="badge">

@@ -17,6 +17,9 @@ const initialState = {
   dispStatus: "idle",
   personHomeWorld: "",
   personSpecie: "",
+  residents: [],
+  next: "",
+  previous: "",
 };
 function reducer(state, action) {
   switch (action.type) {
@@ -26,22 +29,28 @@ function reducer(state, action) {
       if (state.active === "people")
         return {
           ...state,
-          people: action.payload,
-          searchPeople: action.payload,
+          people: action.payload.results,
+          searchPeople: action.payload.results,
+          next: action.payload.next,
+          previous: action.payload.previous,
           status: "fetched",
         };
       if (state.active === "species")
         return {
           ...state,
-          species: action.payload,
-          searchSpecie: action.payload,
+          species: action.payload.results,
+          searchSpecie: action.payload.results,
+          next: action.payload.next,
+          previous: action.payload.previous,
           status: "fetched",
         };
       if (state.active === "planets")
         return {
           ...state,
-          planets: action.payload,
-          searchPlanets: action.payload,
+          planets: action.payload.results,
+          searchPlanets: action.payload.results,
+          next: action.payload.next,
+          previous: action.payload.previous,
           status: "fetched",
         };
       break;
@@ -59,6 +68,12 @@ function reducer(state, action) {
         ...state,
         dispStatus: "fetched",
         personSpecie: action.payload,
+      };
+    case "api/fetchPlanetResidents":
+      return {
+        ...state,
+        dispStatus: "fetched",
+        residents: action.payload,
       };
     case "api/noFetchingNeeded":
       return {
@@ -84,7 +99,10 @@ function ApiProvider({ children }) {
       personSpecie,
       dispStatus,
       active,
+      residents,
       activeId,
+      next,
+      previous,
     },
     dispatch,
   ] = useReducer(reducer, initialState);
@@ -102,6 +120,9 @@ function ApiProvider({ children }) {
         activeId,
         personSpecie,
         active,
+        residents,
+        next,
+        previous,
       }}
     >
       {children}

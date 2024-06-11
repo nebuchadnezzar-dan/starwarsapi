@@ -8,17 +8,6 @@ import "./App.css";
 import { particleOptions } from "./particleOps";
 import { fetchData } from "../helpers/helpers";
 
-const fetchAdditionalData = async (specie) => {
-  try {
-    const results = await fetch(specie);
-    const data = await results.json();
-    return data.name;
-  } catch (err) {
-    console.log(err);
-    return "error";
-  }
-};
-
 const asyncForEach = async (array, callback) => {
   for (let index = 0; index < array.length; index++) {
     await callback(array[index], index, array);
@@ -26,28 +15,10 @@ const asyncForEach = async (array, callback) => {
 };
 
 function App() {
-  const [people, setPeople] = useState([]);
-  const [searchPeople, setSearchPeople] = useState([]);
-  const [searchSpecie, setSearchSpecie] = useState([]);
-  const [species, setSPecie] = useState([]);
-  const [planets, setPlanets] = useState([]);
-  const [searchPanets, setSearchPlanets] = useState([]);
-  const [residents, setResidents] = useState([]);
-  const [personSpecie, setPersonSpecie] = useState("");
-  const [personHomeWorld, setPersonHomeWorld] = useState("");
-  const [speciesHomeWorld, setSpeciesHomeWorld] = useState("");
-  const [planetResidents, setPlanetResidents] = useState("");
   const [next, setNext] = useState("");
   const [previous, setPrevious] = useState("");
   const [page, setPage] = useState("");
-  const [isEmpty, setIsEmpty] = useState(true);
   const [active, setActive] = useState("");
-  const [dispPerson, setDispPerson] = useState("");
-  const [dispSpecie, setDispSpecie] = useState("");
-  const [dispPlanet, setDispPlanet] = useState("");
-  const [failed, setFailed] = useState(false);
-  const [loading, setLoading] = useState(false);
-  const [dispLoading, setDispLoading] = useState(false);
 
   const onClickApi = async (event) => {
     event.persist();
@@ -86,75 +57,6 @@ function App() {
     }
   };
 
-  const onSetState = (data, active) => {
-    if (active === "people") {
-      this.setState({
-        people: data.results,
-        searchPeople: data.results,
-        searchSpecie: [],
-        searchPlanets: [],
-        species: [],
-        planets: [],
-        dispSpecie: "",
-        dispPlanet: "",
-      });
-    } else if (active === "species") {
-      this.setState({
-        species: data.results,
-        searchSpecie: data.results,
-        searchPeople: [],
-        searchPlanets: [],
-        people: [],
-        planets: [],
-        dispPerson: "",
-        dispPlanet: "",
-      });
-    } else if (active === "planets") {
-      this.setState({
-        planets: data.results,
-        searchPlanets: data.results,
-        searchPeople: [],
-        searchSpecie: [],
-        people: [],
-        species: [],
-        dispPerson: "",
-        dispSpecie: "",
-      });
-    }
-  };
-
-  const onDisplay = async (id) => {
-    this.setState({ dispLoading: true });
-    if (this.state.active === "people") {
-      const person = this.state.people[id];
-      const personSpecie = await fetchAdditionalData(person.species);
-      const personHomeWorld = await fetchAdditionalData(person.homeworld);
-      this.setState({
-        dispPerson: person,
-        personSpecie: personSpecie,
-        personHomeWorld: personHomeWorld,
-      });
-    } else if (this.state.active === "species") {
-      const specie = this.state.species[id];
-      const speciesHomeWorld = await fetchAdditionalData(specie.homeworld);
-      this.setState({ dispSpecie: specie, speciesHomeWorld: speciesHomeWorld });
-    } else if (this.state.active === "planets") {
-      const planet = this.state.planets[id];
-      let planetsResidents;
-      if (planet.residents.length > 0) {
-        const residentArray = [];
-        await asyncForEach(planet.residents, async (num) => {
-          residentArray.push(await fetchAdditionalData(num));
-        });
-        planetsResidents = residentArray;
-      } else {
-        planetsResidents = "";
-      }
-      this.setState({ dispPlanet: planet, planetResidents: planetsResidents });
-    }
-    this.setState({ dispLoading: false });
-  };
-
   const onSearch = (event) => {
     let filtered;
     if (this.state.active === "people") {
@@ -175,10 +77,6 @@ function App() {
     }
   };
 
-  function sideBarHanlder() {
-    console.log("clicked");
-  }
-
   return (
     <div>
       <Particles className="particles" params={particleOptions} />
@@ -193,29 +91,8 @@ function App() {
         />
         <div className="content">
           <Sidebar />
-          <Gallery
-            isEmpty={isEmpty}
-            people={people}
-            species={species}
-            planets={planets}
-            next={next}
-            active={active}
-            previous={previous}
-            loading={loading}
-            onDisplay={onDisplay}
-            failed={failed}
-          >
-            <Display
-              dispPerson={dispPerson}
-              dispSpecie={dispSpecie}
-              dispPlanet={dispPlanet}
-              active={active}
-              personSpecie={personSpecie}
-              personHomeWorld={personHomeWorld}
-              speciesHomeWorld={speciesHomeWorld}
-              planetResidents={planetResidents}
-              dispLoading={dispLoading}
-            />
+          <Gallery>
+            <Display />
           </Gallery>
         </div>
       </div>

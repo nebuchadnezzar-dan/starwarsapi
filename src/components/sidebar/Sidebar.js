@@ -30,7 +30,15 @@ function Sidebar() {
   async function sideBarHanlder(url, activeUrl) {
     dispatch({ type: "api/fetching", payload: activeUrl });
     const returnedData = await fetchData(url);
-    dispatch({ type: "api/fetched", payload: returnedData.results });
+    console.log(returnedData);
+    dispatch({
+      type: "api/fetched",
+      payload: {
+        results: returnedData.results,
+        next: returnedData.next,
+        previous: returnedData.previous,
+      },
+    });
   }
 
   return (

@@ -6,6 +6,12 @@ import "./gallery.css";
 import { useApi } from "../../contexts/ApiContext";
 import { fetchData } from "../../helpers/helpers";
 
+const asyncForEach = async (array, callback) => {
+  for (let index = 0; index < array.length; index++) {
+    await callback(array[index], index, array);
+  }
+};
+
 const Gallery = ({
   isEmpty,
   // people,
@@ -47,6 +53,23 @@ const Gallery = ({
 
     // console.log(personHomeWorld);
   }
+  async function planetsFetchHandler(id) {
+    const planet = planets.at(id);
+    let planetsResidents;
+    dispatch({ type: "api/singleFetching", payload: id });
+    if (planet.residents.length > 0) {
+      const residentArray = [];
+      await asyncForEach(planet.residents, async (num) => {
+        const resident = await fetchData(num);
+        residentArray.push(resident.name);
+      });
+      planetsResidents = residentArray;
+    } else {
+      planetsResidents = [];
+    }
+    dispatch({ type: "api/fetchPlanetResidents", payload: planetsResidents });
+  }
+
   let finalOutput = "";
   if (active === "people") {
     finalOutput = people.map((person, i) => (
@@ -85,7 +108,7 @@ const Gallery = ({
         climate={planet.climate}
         terrain={planet.terrain}
         population={planet.population}
-        onDisplay={onDisplay}
+        onDisplay={planetsFetchHandler}
       />
     ));
   } else {

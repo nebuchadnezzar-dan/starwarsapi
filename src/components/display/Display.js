@@ -2,17 +2,7 @@ import React from "react";
 import "./display.css";
 import { useApi } from "../../contexts/ApiContext";
 
-const Display = ({
-  // dispPerson,
-  dispSpecie,
-  dispPlanet,
-  // active,
-  // personSpecie,
-  // personHomeWorld,
-  speciesHomeWorld,
-  planetResidents,
-  dispLoading,
-}) => {
+const Display = () => {
   const {
     activeId,
     personSpecie,
@@ -21,6 +11,8 @@ const Display = ({
     active,
     species,
     personHomeWorld,
+    planets,
+    residents,
   } = useApi();
   const {
     height,
@@ -52,8 +44,9 @@ const Display = ({
     terrain,
     surface_water,
     population,
-  } = dispPlanet;
-  let name, finalOutPut, residents;
+    name: planetName,
+  } = { ...planets.at(activeId) };
+  let finalOutPut;
   if (dispStatus === "loading") {
     finalOutPut = "";
   } else if (active === "people" && dispStatus === "fetched") {
@@ -143,14 +136,17 @@ const Display = ({
         </div>
       </div>
     );
-  } else if (active === "planets" && dispLoading === false) {
-    name = dispPlanet.name;
-    residents = planetResidents;
+  } else if (active === "planets" && dispStatus === "fetched") {
+    // name = dispPlanet.name;
+    // residents = planetResidents;
     finalOutPut = (
       <div className="dispContainer">
         <figure className="dispContImg">
-          <img src={`https://robohash.org/${name}?set=set2`} alt="profile" />
-          <figcaption>{name}</figcaption>
+          <img
+            src={`https://robohash.org/${planetName}?set=set2`}
+            alt="profile"
+          />
+          <figcaption>{planetName}</figcaption>
         </figure>
         <div className="dispContInfo">
           <p>
@@ -201,13 +197,7 @@ const Display = ({
       <div />
     </div>
   ) : (
-    <div
-      className={
-        !(dispPlanet === null || activeId === null || dispSpecie === null)
-          ? "display"
-          : "displayLoading"
-      }
-    >
+    <div className={!(activeId === null) ? "display" : "displayLoading"}>
       {finalOutPut}
     </div>
   );

@@ -1,10 +1,24 @@
-import React from 'react';
-import './search.css';
-import { ReactComponent as Logo } from '../../img/SVG/icons8-darth-vader.svg';
-import { ReactComponent as Left } from '../../img/SVG/arrow-left2.svg';
-import { ReactComponent as Right } from '../../img/SVG/arrow-right2.svg';
+import React from "react";
+import "./search.css";
+import { ReactComponent as Logo } from "../../img/SVG/icons8-darth-vader.svg";
+import { ReactComponent as Left } from "../../img/SVG/arrow-left2.svg";
+import { ReactComponent as Right } from "../../img/SVG/arrow-right2.svg";
+import { useApi } from "../../contexts/ApiContext";
 
-const Search = ({ onSearch, onClicked, next, previous, active, page }) => {
+const Search = ({
+  onSearch,
+  onClicked,
+  // next,
+  // previous,
+  // active,
+  page,
+}) => {
+  const { active, people, species, planets, next, previous } = useApi();
+  // let next;
+  // next = active === "people" && people.next;
+  // next = active === "species" && species.next;
+  // next = active === "planets" && planets.next;
+  console.log(next);
   return (
     <div>
       <div className="searchContainer">
@@ -30,7 +44,7 @@ const Search = ({ onSearch, onClicked, next, previous, active, page }) => {
               <p>Previous</p>
             </div>
           ) : (
-            ''
+            ""
           )}
           <p className="page">{page}</p>
           {next ? (
@@ -44,7 +58,7 @@ const Search = ({ onSearch, onClicked, next, previous, active, page }) => {
               <Right className="arrow-icon arrow-icon--right" />
             </div>
           ) : (
-            ''
+            ""
           )}
         </div>
       </div>
