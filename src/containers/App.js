@@ -1,31 +1,31 @@
-import React, { Component } from 'react';
-import Gallery from '../components/gallery/Gallery';
-import Sidebar from '../components/sidebar/Sidebar';
-import Particles from 'react-particles-js';
-import Search from '../components/searchbar/Search';
-import Display from '../components/display/Display';
-import './App.css';
-import { particleOptions } from './particleOps';
+import React, { useState } from "react";
+import Gallery from "../components/gallery/Gallery";
+import Sidebar from "../components/sidebar/Sidebar";
+import Particles from "react-particles-js";
+import Search from "../components/searchbar/Search";
+import Display from "../components/display/Display";
+import "./App.css";
+import { particleOptions } from "./particleOps";
 
-const fetchData = async url => {
+const fetchData = async (url) => {
   try {
     const results = await fetch(url);
     const data = await results.json();
     return data;
   } catch (err) {
     console.log(err);
-    return 'error';
+    return "error";
   }
 };
 
-const fetchAdditionalData = async specie => {
+const fetchAdditionalData = async (specie) => {
   try {
     const results = await fetch(specie);
     const data = await results.json();
     return data.name;
   } catch (err) {
     console.log(err);
-    return 'error';
+    return "error";
   }
 };
 
@@ -35,59 +35,54 @@ const asyncForEach = async (array, callback) => {
   }
 };
 
-class App extends Component {
-  constructor() {
-    super();
-    this.state = {
-      people: [],
-      searchPeople: [],
-      searchSpecie: [],
-      species: [],
-      planets: [],
-      searchPlanets: [],
-      residents: [],
-      personSpecie: '',
-      personHomeWorld: '',
-      speciesHomeWorld: '',
-      planetResidents: '',
-      next: '',
-      previous: '',
-      page: '',
-      isEmpty: true,
-      active: '',
-      dispPerson: '',
-      dispSpecie: '',
-      dispPlanet: '',
-      failed: false,
-      loading: false,
-      dispLoading: false
-    };
-  }
+function App() {
+  const [people, setPeople] = useState([]);
+  const [searchPeople, setSearchPeople] = useState([]);
+  const [searchSpecie, setSearchSpecie] = useState([]);
+  const [species, setSPecie] = useState([]);
+  const [planets, setPlanets] = useState([]);
+  const [searchPanets, setSearchPlanets] = useState([]);
+  const [residents, setResidents] = useState([]);
+  const [personSpecie, setPersonSpecie] = useState("");
+  const [personHomeWorld, setPersonHomeWorld] = useState("");
+  const [speciesHomeWorld, setSpeciesHomeWorld] = useState("");
+  const [planetResidents, setPlanetResidents] = useState("");
+  const [next, setNext] = useState("");
+  const [previous, setPrevious] = useState("");
+  const [page, setPage] = useState("");
+  const [isEmpty, setIsEmpty] = useState(true);
+  const [active, setActive] = useState("");
+  const [dispPerson, setDispPerson] = useState("");
+  const [dispSpecie, setDispSpecie] = useState("");
+  const [dispPlanet, setDispPlanet] = useState("");
+  const [failed, setFailed] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [dispLoading, setDispLoading] = useState(false);
 
-  onClickApi = async event => {
+  const onClickApi = async (event) => {
     event.persist();
     let url;
     let active;
     const closest = event.target;
-    if (closest.closest('.people')) {
-      url = closest.closest('.people').dataset.url;
-      active = closest.closest('.people').dataset.active;
-    } else if (closest.closest('.species')) {
-      url = closest.closest('.species').dataset.url;
-      active = closest.closest('.species').dataset.active;
-    } else if (closest.closest('.planets')) {
-      url = closest.closest('.planets').dataset.url;
-      active = closest.closest('.planets').dataset.active;
-    } else if (closest.closest('.btn-next')) {
-      url = closest.closest('.btn-next').dataset.url;
-      active = closest.closest('.btn-next').dataset.active;
-    } else if (closest.closest('.btn-previous')) {
-      url = closest.closest('.btn-previous').dataset.url;
-      active = closest.closest('.btn-previous').dataset.active;
+    if (closest.closest(".people")) {
+      url = closest.closest(".people").dataset.url;
+      active = closest.closest(".people").dataset.active;
+    } else if (closest.closest(".species")) {
+      url = closest.closest(".species").dataset.url;
+      active = closest.closest(".species").dataset.active;
+    } else if (closest.closest(".planets")) {
+      url = closest.closest(".planets").dataset.url;
+      active = closest.closest(".planets").dataset.active;
+    } else if (closest.closest(".btn-next")) {
+      url = closest.closest(".btn-next").dataset.url;
+      active = closest.closest(".btn-next").dataset.active;
+    } else if (closest.closest(".btn-previous")) {
+      url = closest.closest(".btn-previous").dataset.url;
+      active = closest.closest(".btn-previous").dataset.active;
     }
     this.setState({ loading: true, isEmpty: false });
     const returnedData = await fetchData(url);
-    if (returnedData === 'error') {
+    if (returnedData === "error") {
       this.setState({ failed: true, loading: false });
     } else {
       this.setState({
@@ -95,14 +90,14 @@ class App extends Component {
         previous: returnedData.previous,
         loading: false,
         page: url.match(/\d/)[0],
-        active: active
+        active: active,
       });
       this.onSetState(returnedData, active);
     }
   };
 
-  onSetState = (data, active) => {
-    if (active === 'people') {
+  const onSetState = (data, active) => {
+    if (active === "people") {
       this.setState({
         people: data.results,
         searchPeople: data.results,
@@ -110,10 +105,10 @@ class App extends Component {
         searchPlanets: [],
         species: [],
         planets: [],
-        dispSpecie: '',
-        dispPlanet: ''
+        dispSpecie: "",
+        dispPlanet: "",
       });
-    } else if (active === 'species') {
+    } else if (active === "species") {
       this.setState({
         species: data.results,
         searchSpecie: data.results,
@@ -121,10 +116,10 @@ class App extends Component {
         searchPlanets: [],
         people: [],
         planets: [],
-        dispPerson: '',
-        dispPlanet: ''
+        dispPerson: "",
+        dispPlanet: "",
       });
-    } else if (active === 'planets') {
+    } else if (active === "planets") {
       this.setState({
         planets: data.results,
         searchPlanets: data.results,
@@ -132,128 +127,107 @@ class App extends Component {
         searchSpecie: [],
         people: [],
         species: [],
-        dispPerson: '',
-        dispSpecie: ''
+        dispPerson: "",
+        dispSpecie: "",
       });
     }
   };
 
-  onDisplay = async id => {
+  const onDisplay = async (id) => {
     this.setState({ dispLoading: true });
-    if (this.state.active === 'people') {
+    if (this.state.active === "people") {
       const person = this.state.people[id];
       const personSpecie = await fetchAdditionalData(person.species);
       const personHomeWorld = await fetchAdditionalData(person.homeworld);
       this.setState({
         dispPerson: person,
         personSpecie: personSpecie,
-        personHomeWorld: personHomeWorld
+        personHomeWorld: personHomeWorld,
       });
-    } else if (this.state.active === 'species') {
+    } else if (this.state.active === "species") {
       const specie = this.state.species[id];
       const speciesHomeWorld = await fetchAdditionalData(specie.homeworld);
       this.setState({ dispSpecie: specie, speciesHomeWorld: speciesHomeWorld });
-    } else if (this.state.active === 'planets') {
+    } else if (this.state.active === "planets") {
       const planet = this.state.planets[id];
       let planetsResidents;
       if (planet.residents.length > 0) {
         const residentArray = [];
-        await asyncForEach(planet.residents, async num => {
+        await asyncForEach(planet.residents, async (num) => {
           residentArray.push(await fetchAdditionalData(num));
         });
         planetsResidents = residentArray;
       } else {
-        planetsResidents = '';
+        planetsResidents = "";
       }
       this.setState({ dispPlanet: planet, planetResidents: planetsResidents });
     }
     this.setState({ dispLoading: false });
   };
 
-  onSearch = event => {
+  const onSearch = (event) => {
     let filtered;
-    if (this.state.active === 'people') {
-      filtered = this.state.searchPeople.filter(el => {
+    if (this.state.active === "people") {
+      filtered = this.state.searchPeople.filter((el) => {
         return el.name.toLowerCase().includes(event.target.value.toLowerCase());
       });
       this.setState({ people: filtered });
-    } else if (this.state.active === 'species') {
-      filtered = this.state.searchSpecie.filter(el => {
+    } else if (this.state.active === "species") {
+      filtered = this.state.searchSpecie.filter((el) => {
         return el.name.toLowerCase().includes(event.target.value.toLowerCase());
       });
       this.setState({ species: filtered });
-    } else if (this.state.active === 'planets') {
-      filtered = this.state.searchPlanets.filter(el => {
+    } else if (this.state.active === "planets") {
+      filtered = this.state.searchPlanets.filter((el) => {
         return el.name.toLowerCase().includes(event.target.value.toLowerCase());
       });
       this.setState({ planets: filtered });
     }
   };
 
-  render() {
-    const {
-      isEmpty,
-      people,
-      active,
-      loading,
-      next,
-      page,
-      previous,
-      dispPerson,
-      species,
-      dispSpecie,
-      personSpecie,
-      personHomeWorld,
-      speciesHomeWorld,
-      planets,
-      planetResidents,
-      dispPlanet,
-      failed,
-      dispLoading
-    } = this.state;
-    return (
-      <div>
-        <Particles className="particles" params={particleOptions} />
-        <div className="container">
-          <Search
-            onSearch={this.onSearch}
+  return (
+    <div>
+      <Particles className="particles" params={particleOptions} />
+      <div className="container">
+        <Search
+          onSearch={onSearch}
+          next={next}
+          active={active}
+          previous={previous}
+          onClicked={onClickApi}
+          page={page}
+        />
+        <div className="content">
+          <Sidebar onClicked={onClickApi} active={active} />
+          <Gallery
+            isEmpty={isEmpty}
+            people={people}
+            species={species}
+            planets={planets}
             next={next}
             active={active}
             previous={previous}
-            onClicked={this.onClickApi}
-            page={page}
-          />
-          <div className="content">
-            <Sidebar onClicked={this.onClickApi} active={active} />
-            <Gallery
-              isEmpty={isEmpty}
-              people={people}
-              species={species}
-              planets={planets}
-              next={next}
+            loading={loading}
+            onDisplay={onDisplay}
+            failed={failed}
+          >
+            <Display
+              dispPerson={dispPerson}
+              dispSpecie={dispSpecie}
+              dispPlanet={dispPlanet}
               active={active}
-              previous={previous}
-              loading={loading}
-              onDisplay={this.onDisplay}
-              failed={failed}
-            >
-              <Display
-                dispPerson={dispPerson}
-                dispSpecie={dispSpecie}
-                dispPlanet={dispPlanet}
-                active={active}
-                personSpecie={personSpecie}
-                personHomeWorld={personHomeWorld}
-                speciesHomeWorld={speciesHomeWorld}
-                planetResidents={planetResidents}
-                dispLoading={dispLoading}
-              />
-            </Gallery>
-          </div>
+              personSpecie={personSpecie}
+              personHomeWorld={personHomeWorld}
+              speciesHomeWorld={speciesHomeWorld}
+              planetResidents={planetResidents}
+              dispLoading={dispLoading}
+            />
+          </Gallery>
         </div>
       </div>
-    );
-  }
+    </div>
+  );
+  // }
 }
 
 export default App;
