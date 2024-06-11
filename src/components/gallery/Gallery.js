@@ -1,25 +1,27 @@
-import React from 'react';
-import Card from '../card/Card';
-import List from '../list/List';
-import Badge from '../badge/Badge';
-import './gallery.css';
+import React from "react";
+import Card from "../card/Card";
+import List from "../list/List";
+import Badge from "../badge/Badge";
+import "./gallery.css";
+import { useApi } from "../../contexts/ApiContext";
 
 const Gallery = ({
   isEmpty,
-  people,
+  // people,
   next,
   previous,
   onClicked,
   loading,
-  active,
+  // active,
   onDisplay,
   children,
-  species,
+  // species,
   failed,
-  planets
+  // planets,
 }) => {
-  let finalOutput = '';
-  if (active === 'people') {
+  const { people, species, planets, active, status } = useApi();
+  let finalOutput = "";
+  if (active === "people") {
     finalOutput = people.map((person, i) => (
       <Card
         key={i}
@@ -36,11 +38,11 @@ const Gallery = ({
         onDisplay={onDisplay}
       />
     ));
-  } else if (active === 'species') {
+  } else if (active === "species") {
     finalOutput = species.map((spec, i) => (
       <List key={i} id={i} name={spec.name} onDisplay={onDisplay} />
     ));
-  } else if (active === 'planets') {
+  } else if (active === "planets") {
     finalOutput = planets.map((planet, i) => (
       <Badge
         key={i}
@@ -62,12 +64,13 @@ const Gallery = ({
   }
   return (
     <div className="gallery">
-      {isEmpty ? (
-        ''
+      {!(people.length || species.length || planets.length) &&
+      status === "idle" ? (
+        ""
       ) : (
         <div className="galleryContainer">
-          {' '}
-          {loading ? (
+          {" "}
+          {status === "loading" ? (
             <div className="lds-ripple">
               <div />
               <div />
@@ -77,7 +80,7 @@ const Gallery = ({
           )}
         </div>
       )}
-      {children}
+      {/* {children} */}
     </div>
   );
 };

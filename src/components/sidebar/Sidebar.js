@@ -6,9 +6,12 @@ import { ReactComponent as Species } from "../../img/SVG/make-group.svg";
 import { ReactComponent as Planets } from "../../img/SVG/sphere.svg";
 
 import Auxillary from "../../hoc/Auxillary/Auxillary";
+import { fetchData } from "../../helpers/helpers";
+import { useApi } from "../../contexts/ApiContext";
 
-function Sidebar({ onClicked, active }) {
+function Sidebar() {
   const [hide, setHide] = useState(true);
+  const { active, dispatch } = useApi();
   useEffect(function () {
     window.addEventListener("resize", updateDimensions);
 
@@ -24,12 +27,23 @@ function Sidebar({ onClicked, active }) {
     setHide((hidden) => !hidden);
   }
 
+  async function sideBarHanlder(url, activeUrl) {
+    dispatch({ type: "api/fetching", payload: activeUrl });
+    const returnedData = await fetchData(url);
+    dispatch({ type: "api/fetched", payload: returnedData.results });
+  }
+
   return (
     <Auxillary>
       <div className={`navigation ${hide ? "hideNav" : null}`}>
         <nav>
-          <ul className="nav-style" onClick={onClicked}>
-            <li className={active === "people" ? "active" : ""}>
+          <ul className="nav-style">
+            <li
+              className={active === "people" ? "active" : ""}
+              onClick={() =>
+                sideBarHanlder("https://swapi.dev/api/people/?page=1", "people")
+              }
+            >
               <p
                 className="nav-link people"
                 data-url="https://swapi.dev/api/people/?page=1"
@@ -39,7 +53,15 @@ function Sidebar({ onClicked, active }) {
                 <span>People</span>
               </p>
             </li>
-            <li className={active === "species" ? "active" : ""}>
+            <li
+              className={active === "species" ? "active" : ""}
+              onClick={() =>
+                sideBarHanlder(
+                  "https://swapi.dev/api/species/?page=1",
+                  "species"
+                )
+              }
+            >
               <p
                 className="nav-link species"
                 data-url="https://swapi.dev/api/species/?page=1"
@@ -49,7 +71,15 @@ function Sidebar({ onClicked, active }) {
                 <span>Species</span>
               </p>
             </li>
-            <li className={active === "planets" ? "active" : ""}>
+            <li
+              className={active === "planets" ? "active" : ""}
+              onClick={() =>
+                sideBarHanlder(
+                  "https://swapi.dev/api/planets/?page=1",
+                  "planets"
+                )
+              }
+            >
               <p
                 className="nav-link planets"
                 data-url="https://swapi.dev/api/planets/?page=1"

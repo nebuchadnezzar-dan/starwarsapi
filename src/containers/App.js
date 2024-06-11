@@ -6,17 +6,7 @@ import Search from "../components/searchbar/Search";
 import Display from "../components/display/Display";
 import "./App.css";
 import { particleOptions } from "./particleOps";
-
-const fetchData = async (url) => {
-  try {
-    const results = await fetch(url);
-    const data = await results.json();
-    return data;
-  } catch (err) {
-    console.log(err);
-    return "error";
-  }
-};
+import { fetchData } from "../helpers/helpers";
 
 const fetchAdditionalData = async (specie) => {
   try {
@@ -185,6 +175,10 @@ function App() {
     }
   };
 
+  function sideBarHanlder() {
+    console.log("clicked");
+  }
+
   return (
     <div>
       <Particles className="particles" params={particleOptions} />
@@ -198,7 +192,7 @@ function App() {
           page={page}
         />
         <div className="content">
-          <Sidebar onClicked={onClickApi} active={active} />
+          <Sidebar />
           <Gallery
             isEmpty={isEmpty}
             people={people}
