@@ -83,6 +83,23 @@ function reducer(state, action) {
         personHomeWorld: "N/A",
         personSpecie: "N/A",
       };
+    case "api/filter":
+      if (state.active === "people")
+        return {
+          ...state,
+          people: action.payload,
+        };
+      if (state.active === "species")
+        return {
+          ...state,
+          species: action.payload,
+        };
+      if (state.active === "planets")
+        return {
+          ...state,
+          planets: action.payload,
+        };
+      break;
     default:
       return state;
   }
@@ -103,6 +120,9 @@ function ApiProvider({ children }) {
       activeId,
       next,
       previous,
+      searchPeople,
+      searchPlanets,
+      searchSpecie,
     },
     dispatch,
   ] = useReducer(reducer, initialState);
@@ -123,6 +143,9 @@ function ApiProvider({ children }) {
         residents,
         next,
         previous,
+        searchPeople,
+        searchPlanets,
+        searchSpecie,
       }}
     >
       {children}

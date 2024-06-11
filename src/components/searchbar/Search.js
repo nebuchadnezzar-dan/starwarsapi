@@ -4,21 +4,52 @@ import { ReactComponent as Logo } from "../../img/SVG/icons8-darth-vader.svg";
 import { ReactComponent as Left } from "../../img/SVG/arrow-left2.svg";
 import { ReactComponent as Right } from "../../img/SVG/arrow-right2.svg";
 import { useApi } from "../../contexts/ApiContext";
+import { fetchData } from "../../helpers/helpers";
 
-const Search = ({
-  onSearch,
-  onClicked,
-  // next,
-  // previous,
-  // active,
-  page,
-}) => {
-  const { active, people, species, planets, next, previous } = useApi();
-  // let next;
-  // next = active === "people" && people.next;
-  // next = active === "species" && species.next;
-  // next = active === "planets" && planets.next;
-  console.log(next);
+const Search = () => {
+  const {
+    active,
+    next,
+    previous,
+    dispatch,
+    searchPeople,
+    searchSpecie,
+    searchPlanets,
+  } = useApi();
+
+  async function sideBarHanlder(direction) {
+    dispatch({ type: "api/fetching", payload: active });
+    const url = direction === "next" ? next : previous;
+    const returnedData = await fetchData(url);
+    console.log(returnedData);
+    dispatch({
+      type: "api/fetched",
+      payload: {
+        results: returnedData.results,
+        next: returnedData.next,
+        previous: returnedData.previous,
+      },
+    });
+  }
+
+  const onSearch = (event) => {
+    let filtered;
+
+    if (active === "people")
+      filtered = searchPeople.filter((el) => {
+        return el.name.toLowerCase().includes(event.target.value.toLowerCase());
+      });
+    if (active === "species")
+      filtered = searchSpecie.filter((el) => {
+        return el.name.toLowerCase().includes(event.target.value.toLowerCase());
+      });
+    if (active === "planets")
+      filtered = searchPlanets.filter((el) => {
+        return el.name.toLowerCase().includes(event.target.value.toLowerCase());
+      });
+
+    dispatch({ type: "api/filter", payload: filtered });
+  };
   return (
     <div>
       <div className="searchContainer">
@@ -36,7 +67,7 @@ const Search = ({
           {previous ? (
             <div
               className="btn btn-previous"
-              onClick={onClicked}
+              onClick={() => sideBarHanlder("prev")}
               data-url={previous}
               data-active={active}
             >
@@ -46,11 +77,17 @@ const Search = ({
           ) : (
             ""
           )}
-          <p className="page">{page}</p>
+          <p className="page">
+            {next?.length > 0
+              ? next.match(/\d/)[0] - 1
+              : next === null
+              ? Number(previous.match(/\d/)[0]) + 1
+              : ""}
+          </p>
           {next ? (
             <div
               className="btn btn-next"
-              onClick={onClicked}
+              onClick={() => sideBarHanlder("next")}
               data-url={next}
               data-active={active}
             >
