@@ -1,6 +1,8 @@
 import React from "react";
 import "./badge.css";
 import BadgeFace from "./BadgeFace";
+import TextDescription from "../ui/TextDescription";
+import Container from "../ui/Container";
 
 const Badge = ({
   id,
@@ -12,10 +14,8 @@ const Badge = ({
   onDisplay,
 }) => {
   return (
-    <div className="badge">
-      <BadgeFace position="front" name={name}>
-        <p className="badge-text">{name}</p>
-      </BadgeFace>
+    <Container className="badge">
+      <BadgeFace position="front" name={name} />
       <BadgeFace
         position="back"
         name={name}
@@ -23,14 +23,17 @@ const Badge = ({
           onDisplay(id);
         }}
       >
-        <p>
-          diameter: <span>{diameter}</span> <br />
-          climate: <span>{climate}</span> <br />
-          terrain: <span>{terrain}</span> <br />
-          population: <span>{population}</span> <br />
-        </p>
+        <TextDescription
+          label={[
+            { label: "diameter", labelValue: diameter },
+            { label: "climate", labelValue: climate },
+            { label: "terrain", labelValue: terrain },
+            { label: "population", labelValue: population },
+          ]}
+          orientation="badge"
+        />
       </BadgeFace>
-    </div>
+    </Container>
   );
 };
 

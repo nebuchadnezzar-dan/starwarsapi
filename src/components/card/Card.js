@@ -1,5 +1,9 @@
 import React from "react";
 import "./card.css";
+import ProfileImage from "../ui/ProfileImage";
+import TextDescription from "../ui/TextDescription";
+import Container from "../ui/Container";
+import CardProfile from "./CardProfile";
 
 const Card = ({
   id,
@@ -14,37 +18,26 @@ const Card = ({
   homeWorld,
 }) => {
   return (
-    <div className="card">
-      <div className="profile">
-        <div className="info">
-          <p>
-            birth Year: <span>{birthYear}</span>
-          </p>
-          <p>
-            height: <span>{height}</span>
-          </p>
-          <p>
-            mass: <span>{mass}</span>
-          </p>
-          <p>
-            hair color: <span>{hairColor}</span>
-          </p>
-          <p>
-            skinColor: <span>{skinColor}</span>
-          </p>
-        </div>
-        <img src={`https://robohash.org/${name}?set=set4`} alt="profile" />
-        <div className="description">
-          <h3
-            onClick={() => {
-              onDisplay(homeWorld, species, id);
-            }}
-          >
-            {name}
-          </h3>
-        </div>
-      </div>
-    </div>
+    <Container className="card">
+      <CardProfile
+        name={name}
+        callback={() => {
+          onDisplay(homeWorld, species, id);
+        }}
+      >
+        <TextDescription
+          label={[
+            { label: "birth Year", labelValue: birthYear },
+            { label: "height", labelValue: height },
+            { label: "mass", labelValue: mass },
+            { label: "hair color", labelValue: hairColor },
+            { label: "skin color", labelValue: skinColor },
+          ]}
+        />
+
+        <ProfileImage set={4} name={name} alt="profile" />
+      </CardProfile>
+    </Container>
   );
 };
 
