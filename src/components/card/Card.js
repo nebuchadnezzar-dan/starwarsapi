@@ -26,6 +26,7 @@ const Card = ({
         }}
       >
         <TextDescription
+          labelClassName={"info"}
           label={[
             { label: "birth Year", labelValue: birthYear },
             { label: "height", labelValue: height },

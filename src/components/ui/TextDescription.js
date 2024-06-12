@@ -1,5 +1,5 @@
 import React from "react";
-function TextDescription({ label, orientation }) {
+function TextDescription({ label, labelClassName, orientation }) {
   if (orientation === "badge")
     return (
       <p>
@@ -12,7 +12,7 @@ function TextDescription({ label, orientation }) {
       </p>
     );
   return (
-    <div className="info">
+    <div className={labelClassName}>
       {label.map((lab) => (
         <p key={lab.label}>
           {lab.label}: <span>{lab.labelValue}</span>
