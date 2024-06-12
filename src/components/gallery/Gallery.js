@@ -4,13 +4,7 @@ import List from "../list/List";
 import Badge from "../badge/Badge";
 import "./gallery.css";
 import { useApi } from "../../contexts/ApiContext";
-import { fetchData } from "../../helpers/helpers";
-
-const asyncForEach = async (array, callback) => {
-  for (let index = 0; index < array.length; index++) {
-    await callback(array[index], index, array);
-  }
-};
+import { asyncForEach, fetchData } from "../../helpers/helpers";
 
 const Gallery = ({
   isEmpty,
