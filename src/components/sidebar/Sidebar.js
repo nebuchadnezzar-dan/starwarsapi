@@ -28,17 +28,22 @@ function Sidebar() {
   }
 
   async function sideBarHanlder(url, activeUrl) {
-    dispatch({ type: "api/fetching", payload: activeUrl });
-    const returnedData = await fetchData(url);
-    console.log(returnedData);
-    dispatch({
-      type: "api/fetched",
-      payload: {
-        results: returnedData.results,
-        next: returnedData.next,
-        previous: returnedData.previous,
-      },
-    });
+    try {
+      dispatch({ type: "api/fetching", payload: activeUrl });
+      const returnedData = await fetchData(url);
+      // console.log(returnedData);
+      if (returnedData === "error") throw new Error("failed");
+      dispatch({
+        type: "api/fetched",
+        payload: {
+          results: returnedData.results,
+          next: returnedData.next,
+          previous: returnedData.previous,
+        },
+      });
+    } catch (e) {
+      dispatch({ type: "api/failedFetching" });
+    }
   }
 
   return (
@@ -48,8 +53,13 @@ function Sidebar() {
           <ul className="nav-style">
             <li
               className={active === "people" ? "active" : ""}
-              onClick={() =>
-                sideBarHanlder("https://swapi.dev/api/people/?page=1", "people")
+              onClick={
+                () =>
+                  sideBarHanlder(
+                    "https://swapi.dev/api/people/?page=1",
+                    "people"
+                  )
+                // sideBarHanlder("https://swapi.co/api/planets/?page=1", "people")
               }
             >
               <p

@@ -3,6 +3,8 @@ import "./display.css";
 import { useApi } from "../../contexts/ApiContext";
 import DisplayContainers from "./DisplayContainers";
 import LoadingRipple from "../ui/LoadingRipple";
+import Container from "../ui/Container";
+import StatusMessage from "../ui/StatusMessage";
 
 const Display = () => {
   const {
@@ -52,7 +54,7 @@ const Display = () => {
   return dispStatus === "loading" ? (
     <LoadingRipple />
   ) : (
-    <div className={!(activeId === null) ? "display" : "displayLoading"}>
+    <Container className={!(activeId === null) ? "display" : "displayLoading"}>
       {active === "people" && dispStatus === "fetched" && (
         <DisplayContainers
           name={personName}
@@ -121,7 +123,10 @@ const Display = () => {
           ]}
         />
       )}
-    </div>
+      {dispStatus === "error" && (
+        <StatusMessage>Failed! please reload and try again</StatusMessage>
+      )}
+    </Container>
   );
 };
 

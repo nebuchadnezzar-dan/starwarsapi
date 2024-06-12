@@ -55,7 +55,11 @@ function reducer(state, action) {
         };
       break;
     case "api/singleFetching":
-      return { ...state, dispStatus: "loading", activeId: action.payload };
+      return {
+        ...state,
+        dispStatus: "loading",
+        activeId: action.payload,
+      };
     case "api/singleHomeWorldFetched":
       return {
         ...state,
@@ -100,6 +104,17 @@ function reducer(state, action) {
           planets: action.payload,
         };
       break;
+    case "api/failedFetching":
+      return {
+        ...state,
+        status: "error",
+        active: "",
+      };
+    case "api/failedSingleFetching":
+      return {
+        ...state,
+        dispStatus: "error",
+      };
     default:
       return state;
   }
