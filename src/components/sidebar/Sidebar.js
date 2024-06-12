@@ -5,9 +5,13 @@ import { ReactComponent as People } from "../../img/SVG/user.svg";
 import { ReactComponent as Species } from "../../img/SVG/make-group.svg";
 import { ReactComponent as Planets } from "../../img/SVG/sphere.svg";
 
-import Auxillary from "../../hoc/Auxillary/Auxillary";
 import { fetchData } from "../../helpers/helpers";
 import { useApi } from "../../contexts/ApiContext";
+import Footer from "../ui/Footer";
+import NavItem from "../ui/NavItem";
+import Navigation from "../ui/Navigation";
+import Container from "../ui/Container";
+import NavButton from "../ui/NavButton";
 
 function Sidebar() {
   const [hide, setHide] = useState(true);
@@ -24,6 +28,7 @@ function Sidebar() {
     }
   }
   function onToggleNav() {
+    console.log("hi");
     setHide((hidden) => !hidden);
   }
 
@@ -47,84 +52,42 @@ function Sidebar() {
   }
 
   return (
-    <Auxillary>
-      <div className={`navigation ${hide ? "hideNav" : null}`}>
-        <nav>
-          <ul className="nav-style">
-            <li
-              className={active === "people" ? "active" : ""}
-              onClick={
-                () =>
-                  sideBarHanlder(
-                    "https://swapi.dev/api/people/?page=1",
-                    "people"
-                  )
-                // sideBarHanlder("https://swapi.co/api/planets/?page=1", "people")
-              }
-            >
-              <p
-                className="nav-link people"
-                data-url="https://swapi.dev/api/people/?page=1"
-                data-active="people"
-              >
-                <People className="nav-icon" />
-                <span>People</span>
-              </p>
-            </li>
-            <li
-              className={active === "species" ? "active" : ""}
-              onClick={() =>
-                sideBarHanlder(
-                  "https://swapi.dev/api/species/?page=1",
-                  "species"
-                )
-              }
-            >
-              <p
-                className="nav-link species"
-                data-url="https://swapi.dev/api/species/?page=1"
-                data-active="species"
-              >
-                <Species className="nav-icon" />
-                <span>Species</span>
-              </p>
-            </li>
-            <li
-              className={active === "planets" ? "active" : ""}
-              onClick={() =>
-                sideBarHanlder(
-                  "https://swapi.dev/api/planets/?page=1",
-                  "planets"
-                )
-              }
-            >
-              <p
-                className="nav-link planets"
-                data-url="https://swapi.dev/api/planets/?page=1"
-                data-active="planets"
-              >
-                <Planets className="nav-icon" />
-                <span>Planets</span>
-              </p>
-            </li>
-          </ul>
-        </nav>
-        <div className="footer">
-          <p>
-            Powered by <a href="https://swapi.dev/">swapi.dev</a>
-          </p>
-          <hr />
-          <div className="hideButton" onClick={onToggleNav}>
-            &#9650;
-          </div>
-        </div>
-      </div>
-      <div className={`navigation ${!hide ? "hideNav" : null}`}>
-        <div className="showButton" onClick={onToggleNav}>
-          &#9660;
-        </div>
-      </div>
-    </Auxillary>
+    <>
+      <Container className={`navigation ${hide ? "hideNav" : null}`}>
+        <Navigation>
+          <NavItem
+            className={active === "people" ? "active" : ""}
+            callback={sideBarHanlder}
+            url="https://swapi.dev/api/people/?page=1"
+            item="people"
+            icon={<People className="nav-icon" />}
+            message="People"
+          />
+          <NavItem
+            className={active === "species" ? "active" : ""}
+            callback={sideBarHanlder}
+            url="https://swapi.dev/api/species/?page=1"
+            item="species"
+            icon={<Species className="nav-icon" />}
+            message="Species"
+          />
+          <NavItem
+            className={active === "planets" ? "active" : ""}
+            callback={sideBarHanlder}
+            url="https://swapi.dev/api/planets/?page=1"
+            item="planets"
+            icon={<Planets className="nav-icon" />}
+            message="Planets"
+          />
+        </Navigation>
+
+        <Footer callback={onToggleNav} />
+      </Container>
+      <NavButton
+        className={`navigation ${!hide ? "hideNav" : null}`}
+        callback={onToggleNav}
+      />
+    </>
   );
 }
 
