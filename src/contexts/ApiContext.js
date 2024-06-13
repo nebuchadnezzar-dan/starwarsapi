@@ -25,7 +25,7 @@ function reducer(state, action) {
       return reducerHandler(state, {
         status: "loading",
         active: action.payload,
-        activeId: state.active === action.payload ? state.activeId : null,
+        activeId: null,
       });
 
     case "api/fetched":
@@ -70,7 +70,7 @@ function reducer(state, action) {
     case "api/filter":
       const filter = { ...state };
       filter[state.active] = action.payload;
-      return reducerHandler(state, filter);
+      return reducerHandler(state, { ...filter, activeId: null });
 
     case "api/failedFetching":
       return reducerHandler(state, { status: "error", active: "" });
