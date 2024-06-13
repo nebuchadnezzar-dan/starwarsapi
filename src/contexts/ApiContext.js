@@ -12,11 +12,9 @@ const initialState = {
   species: [],
   planets: [],
   activeId: null,
-  dispSpecie: null,
-  dispPlanet: null,
   dispStatus: "idle",
-  personHomeWorld: "",
-  personSpecie: "",
+  homeworld: "",
+  specie: "",
   residents: [],
   next: "",
   previous: "",
@@ -24,100 +22,75 @@ const initialState = {
 function reducer(state, action) {
   switch (action.type) {
     case "api/fetching":
-      return { ...state, status: "loading", active: action.payload };
+      return reducerHandler(state, {
+        status: "loading",
+        active: action.payload,
+        activeId: state.active === action.payload ? state.activeId : null,
+      });
+
     case "api/fetched":
-      if (state.active === "people")
-        return {
-          ...state,
-          people: action.payload.results,
-          searchPeople: action.payload.results,
-          next: action.payload.next,
-          previous: action.payload.previous,
-          status: "fetched",
-        };
-      if (state.active === "species")
-        return {
-          ...state,
-          species: action.payload.results,
-          searchSpecie: action.payload.results,
-          next: action.payload.next,
-          previous: action.payload.previous,
-          status: "fetched",
-        };
-      if (state.active === "planets")
-        return {
-          ...state,
-          planets: action.payload.results,
-          searchPlanets: action.payload.results,
-          next: action.payload.next,
-          previous: action.payload.previous,
-          status: "fetched",
-        };
-      break;
+      const fetched = { ...state };
+      fetched[state.active] = action.payload.results;
+      fetched[
+        "search" + state.active.charAt(0).toUpperCase() + state.active.slice(1)
+      ] = action.payload.results;
+      return reducerHandler(state, {
+        ...fetched,
+        next: action.payload.next,
+        previous: action.payload.previous,
+        status: "fetched",
+      });
+
     case "api/singleFetching":
-      return {
-        ...state,
+      return reducerHandler(state, {
         dispStatus: "loading",
         activeId: action.payload,
-      };
+      });
+
     case "api/singleHomeWorldFetched":
-      return {
-        ...state,
+      return reducerHandler(state, {
         dispStatus: "fetched",
-        personHomeWorld: action.payload,
-        personSpecie: "",
-      };
+        homeworld: action.payload,
+        specie: "",
+      });
+
     case "api/singleSpeciesFetched":
-      return {
-        ...state,
+      return reducerHandler(state, {
         dispStatus: "fetched",
-        personSpecie: action.payload,
-      };
+        specie: action.payload,
+      });
+
     case "api/fetchPlanetResidents":
-      return {
-        ...state,
+      return reducerHandler(state, {
         dispStatus: "fetched",
         residents: action.payload,
-      };
+      });
+
     case "api/noFetchingNeeded":
-      return {
-        ...state,
+      return reducerHandler(state, {
         dispStatus: "fetched",
         activeId: action.payload,
-        personHomeWorld: "N/A",
-        personSpecie: "N/A",
-      };
+        homeworld: "N/A",
+        specie: "N/A",
+      });
+
     case "api/filter":
-      if (state.active === "people")
-        return {
-          ...state,
-          people: action.payload,
-        };
-      if (state.active === "species")
-        return {
-          ...state,
-          species: action.payload,
-        };
-      if (state.active === "planets")
-        return {
-          ...state,
-          planets: action.payload,
-        };
-      break;
+      const filter = { ...state };
+      filter[state.active] = action.payload;
+      return reducerHandler(state, filter);
+
     case "api/failedFetching":
-      return {
-        ...state,
-        status: "error",
-        active: "",
-      };
+      return reducerHandler(state, { status: "error", active: "" });
+
     case "api/failedSingleFetching":
-      return {
-        ...state,
-        dispStatus: "error",
-      };
+      return reducerHandler(state, { dispStatus: "error" });
     default:
       return state;
   }
+}
+
+function reducerHandler(state, newState) {
+  return { ...state, ...newState };
 }
 
 function ApiProvider({ children }) {
@@ -127,8 +100,8 @@ function ApiProvider({ children }) {
       species,
       planets,
       status,
-      personHomeWorld,
-      personSpecie,
+      homeworld,
+      specie,
       dispStatus,
       active,
       residents,
@@ -150,10 +123,10 @@ function ApiProvider({ children }) {
         dispatch,
         species,
         planets,
-        personHomeWorld,
+        homeworld,
         dispStatus,
         activeId,
-        personSpecie,
+        specie,
         active,
         residents,
         next,

@@ -9,12 +9,12 @@ import StatusMessage from "../ui/StatusMessage";
 const Display = () => {
   const {
     activeId,
-    personSpecie,
+    specie,
     people,
     dispStatus,
     active,
     species,
-    personHomeWorld,
+    homeworld,
     planets,
     residents,
   } = useApi();
@@ -50,83 +50,86 @@ const Display = () => {
     population,
     name: planetName,
   } = { ...planets.at(activeId) };
+  console.log({ ...people.at(activeId) });
 
   return dispStatus === "loading" ? (
     <LoadingRipple />
   ) : (
-    <Container className={!(activeId === null) ? "display" : "displayLoading"}>
-      {active === "people" && dispStatus === "fetched" && (
-        <DisplayContainers
-          name={personName}
-          set={4}
-          alt="profile"
-          labelClassName="dispContInfo"
-          label={[
-            { label: "gender", labelValue: gender },
-            { label: "birth Year", labelValue: birth_year },
-            { label: "height", labelValue: height },
-            { label: "eye color", labelValue: eye_color },
-            { label: "mass", labelValue: mass },
-            { label: "hair color", labelValue: hair_color },
-            { label: "skin color", labelValue: skin_color },
-            { label: "species", labelValue: personSpecie },
-            { label: "homeworld", labelValue: personHomeWorld },
-          ]}
-        />
-      )}
-      {active === "species" && dispStatus === "fetched" && (
-        <DisplayContainers
-          name={specieName}
-          set={3}
-          alt="profile"
-          labelClassName="dispContInfo"
-          label={[
-            { label: "average height", labelValue: average_height },
-            { label: "average lifespan", labelValue: average_lifespan },
-            { label: "classification", labelValue: classification },
-            { label: "designation", labelValue: designation },
-            { label: "eye colors", labelValue: eye_colors },
-            { label: "hair colors", labelValue: hair_colors },
-            { label: "language", labelValue: language },
-            { label: "skin colors", labelValue: skin_colors },
-            { label: "homeworld", labelValue: personHomeWorld },
-          ]}
-        />
-      )}
-      {active === "planets" && dispStatus === "fetched" && (
-        <DisplayContainers
-          name={planetName}
-          set={2}
-          alt="profile"
-          labelClassName="dispContInfo"
-          label={[
-            { label: "rotation period", labelValue: rotation_period },
-            { label: "orbital period", labelValue: orbital_period },
-            { label: "diameter", labelValue: diameter },
-            { label: "climate", labelValue: climate },
-            { label: "gravity", labelValue: gravity },
-            { label: "terrain", labelValue: terrain },
-            { label: "surface water", labelValue: surface_water },
-            { label: "population", labelValue: population },
-            {
-              label: "residents",
-              labelValue: residents
-                ? residents.map((el, i) => {
-                    if (i < residents.length - 1) {
-                      return el + ", ";
-                    } else {
-                      return el;
-                    }
-                  })
-                : "no one special",
-            },
-          ]}
-        />
-      )}
-      {dispStatus === "error" && (
-        <StatusMessage>Failed! please reload and try again</StatusMessage>
-      )}
-    </Container>
+    activeId !== null && (
+      <Container className="display">
+        {active === "people" && dispStatus === "fetched" && (
+          <DisplayContainers
+            name={personName}
+            set={4}
+            alt="profile"
+            labelClassName="dispContInfo"
+            label={[
+              { label: "gender", labelValue: gender },
+              { label: "birth Year", labelValue: birth_year },
+              { label: "height", labelValue: height },
+              { label: "eye color", labelValue: eye_color },
+              { label: "mass", labelValue: mass },
+              { label: "hair color", labelValue: hair_color },
+              { label: "skin color", labelValue: skin_color },
+              { label: "species", labelValue: specie },
+              { label: "homeworld", labelValue: homeworld },
+            ]}
+          />
+        )}
+        {active === "species" && dispStatus === "fetched" && (
+          <DisplayContainers
+            name={specieName}
+            set={3}
+            alt="profile"
+            labelClassName="dispContInfo"
+            label={[
+              { label: "average height", labelValue: average_height },
+              { label: "average lifespan", labelValue: average_lifespan },
+              { label: "classification", labelValue: classification },
+              { label: "designation", labelValue: designation },
+              { label: "eye colors", labelValue: eye_colors },
+              { label: "hair colors", labelValue: hair_colors },
+              { label: "language", labelValue: language },
+              { label: "skin colors", labelValue: skin_colors },
+              { label: "homeworld", labelValue: homeworld },
+            ]}
+          />
+        )}
+        {active === "planets" && dispStatus === "fetched" && (
+          <DisplayContainers
+            name={planetName}
+            set={2}
+            alt="profile"
+            labelClassName="dispContInfo"
+            label={[
+              { label: "rotation period", labelValue: rotation_period },
+              { label: "orbital period", labelValue: orbital_period },
+              { label: "diameter", labelValue: diameter },
+              { label: "climate", labelValue: climate },
+              { label: "gravity", labelValue: gravity },
+              { label: "terrain", labelValue: terrain },
+              { label: "surface water", labelValue: surface_water },
+              { label: "population", labelValue: population },
+              {
+                label: "residents",
+                labelValue: residents
+                  ? residents.map((el, i) => {
+                      if (i < residents.length - 1) {
+                        return el + ", ";
+                      } else {
+                        return el;
+                      }
+                    })
+                  : "no one special",
+              },
+            ]}
+          />
+        )}
+        {dispStatus === "error" && (
+          <StatusMessage>Failed! please reload and try again</StatusMessage>
+        )}
+      </Container>
+    )
   );
 };
 
