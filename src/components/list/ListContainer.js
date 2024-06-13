@@ -3,7 +3,10 @@ import ProfileImage from "../ui/ProfileImage";
 
 function ListContainer({ name, set, id, callback }) {
   return (
-    <div className={`listContainer ${id % 2 === 0 ? "even" : "odd"}`}>
+    <div
+      className={`listContainer ${id % 2 === 0 ? "even" : "odd"}`}
+      onClick={callback}
+    >
       <ProfileImage
         set={set}
         name={name}
@@ -11,9 +14,7 @@ function ListContainer({ name, set, id, callback }) {
         alt="specieimage"
       />
 
-      <p data-nameid={id} onClick={callback}>
-        {name}
-      </p>
+      <p data-nameid={id}>{name}</p>
     </div>
   );
 }
