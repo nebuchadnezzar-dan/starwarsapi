@@ -11,7 +11,7 @@ const List = ({ id, name, homeWorld, onDisplay }) => {
         set={3}
         id={id}
         callback={() => {
-          onDisplay(homeWorld, null, id);
+          onDisplay(homeWorld, id, "homeworld");
         }}
       />
     </Container>

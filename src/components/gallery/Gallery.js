@@ -3,66 +3,22 @@ import Card from "../card/Card";
 import List from "../list/List";
 import Badge from "../badge/Badge";
 import "./gallery.css";
-import { useApi } from "../../contexts/ApiContext";
-import { asyncForEach, fetchData } from "../../helpers/helpers";
+
 import LoadingRipple from "../ui/LoadingRipple";
 import Container from "../ui/Container";
 import StatusMessage from "../ui/StatusMessage";
+import { useSingleFetch } from "../../hooks/useSingleFetch";
 
 const Gallery = ({ children }) => {
-  const { people, species, planets, active, status, dispatch } = useApi();
-
-  async function displaySingleHandler(
-    homeWorldUrl,
-    speciesUrl,
-    activePersonId
-  ) {
-    // console.log(homeWorldUrl, speciesUrl, activePersonId);
-    try {
-      dispatch({ type: "api/noFetchingNeeded", payload: activePersonId });
-      if (homeWorldUrl?.length > 0) {
-        dispatch({ type: "api/singleFetching", payload: activePersonId });
-        const returnedHomeWorld = await fetchData(homeWorldUrl);
-        if (returnedHomeWorld === "error") throw new Error("failed");
-        dispatch({
-          type: "api/singleHomeWorldFetched",
-          payload: returnedHomeWorld.name,
-        });
-      }
-      if (speciesUrl?.length > 0) {
-        dispatch({ type: "api/singleFetching", payload: activePersonId });
-        const returnedSpecies = await fetchData(speciesUrl);
-        if (returnedSpecies === "error") throw new Error("failed");
-        dispatch({
-          type: "api/singleSpeciesFetched",
-          payload: returnedSpecies.name,
-        });
-      }
-    } catch (e) {
-      dispatch({ type: "api/failedSingleFetching" });
-    }
-  }
-  async function planetsFetchHandler(id) {
-    try {
-      const planet = planets.at(id);
-      let planetsResidents;
-      dispatch({ type: "api/singleFetching", payload: id });
-      if (planet.residents.length > 0) {
-        const residentArray = [];
-        await asyncForEach(planet.residents, async (num) => {
-          const resident = await fetchData(num);
-          if (resident === "error") throw new Error("failed");
-          residentArray.push(resident.name);
-        });
-        planetsResidents = residentArray;
-      } else {
-        planetsResidents = [];
-      }
-      dispatch({ type: "api/fetchPlanetResidents", payload: planetsResidents });
-    } catch (e) {
-      dispatch({ type: "api/failedSingleFetching" });
-    }
-  }
+  const {
+    displaySingleHandler,
+    planetsFetchHandler,
+    people,
+    species,
+    planets,
+    status,
+    active,
+  } = useSingleFetch();
 
   return (
     <Container className="gallery">

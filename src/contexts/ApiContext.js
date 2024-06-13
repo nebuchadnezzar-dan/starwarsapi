@@ -46,6 +46,12 @@ function reducer(state, action) {
         dispStatus: "loading",
         activeId: action.payload,
       });
+    case "api/singleFetched":
+      const stateHandler = { ...state };
+      stateHandler[action.payload.item] = action.payload.results;
+      stateHandler.specie =
+        action.payload.item === "homeworld" ? "N/A" : action.payload.results;
+      return reducerHandler(state, { ...stateHandler, dispStatus: "fetched" });
 
     case "api/singleHomeWorldFetched":
       return reducerHandler(state, {

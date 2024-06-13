@@ -50,7 +50,7 @@ const Display = () => {
     population,
     name: planetName,
   } = { ...planets.at(activeId) };
-  console.log({ ...people.at(activeId) });
+  // console.log({ ...people.at(activeId) });
 
   return dispStatus === "loading" ? (
     <LoadingRipple />
