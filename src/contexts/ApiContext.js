@@ -53,19 +53,6 @@ function reducer(state, action) {
         action.payload.item === "homeworld" ? "N/A" : action.payload.results;
       return reducerHandler(state, { ...stateHandler, dispStatus: "fetched" });
 
-    case "api/singleHomeWorldFetched":
-      return reducerHandler(state, {
-        dispStatus: "fetched",
-        homeworld: action.payload,
-        specie: "",
-      });
-
-    case "api/singleSpeciesFetched":
-      return reducerHandler(state, {
-        dispStatus: "fetched",
-        specie: action.payload,
-      });
-
     case "api/fetchPlanetResidents":
       return reducerHandler(state, {
         dispStatus: "fetched",

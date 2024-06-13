@@ -38,7 +38,6 @@ function useSidebar() {
   }
 
   function onSearch(event) {
-    console.log(event);
     let filtered;
 
     if (active === "people")

@@ -5,7 +5,6 @@ function useSingleFetch() {
   const { dispatch, people, species, planets, status, active, activeId } =
     useApi();
   async function displaySingleHandler(url, activePersonId, item) {
-    console.log(url);
     if (url === null) {
       dispatch({ type: "api/noFetchingNeeded", payload: activePersonId });
       return;
@@ -15,7 +14,6 @@ function useSingleFetch() {
     try {
       dispatch({ type: "api/singleFetching", payload: activePersonId });
       const returnedHomeWorld = await fetchData(url);
-      console.log(returnedHomeWorld);
       if (returnedHomeWorld === "error") throw new Error("failed");
       dispatch({
         type: "api/singleFetched",
