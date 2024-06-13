@@ -1,7 +1,9 @@
+import { useEffect, useRef } from "react";
 import { useApi } from "../contexts/ApiContext";
 import { fetchData } from "../helpers/helpers";
 
 function useSidebar() {
+  const searchInputRef = useRef(null);
   const {
     active,
     next,
@@ -11,6 +13,13 @@ function useSidebar() {
     searchSpecies,
     searchPlanets,
   } = useApi();
+
+  useEffect(
+    function () {
+      if (searchInputRef.current !== null) searchInputRef.current.value = "";
+    },
+    [active, next, previous]
+  );
 
   async function sideBarHandler(url, activeItem, direction) {
     try {
@@ -56,7 +65,7 @@ function useSidebar() {
     dispatch({ type: "api/filter", payload: filtered });
   }
 
-  return { active, next, previous, sideBarHandler, onSearch };
+  return { active, next, previous, sideBarHandler, onSearch, searchInputRef };
 }
 
 export { useSidebar };

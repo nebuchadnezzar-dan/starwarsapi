@@ -9,7 +9,8 @@ import PageNumber from "../ui/PageNumber";
 import { useSidebar } from "../../hooks/useSidebar";
 
 const Search = () => {
-  const { next, previous, sideBarHandler, onSearch } = useSidebar();
+  const { next, previous, sideBarHandler, onSearch, searchInputRef } =
+    useSidebar();
 
   return (
     <Container className="searchContainer">
@@ -18,6 +19,7 @@ const Search = () => {
         type="text"
         className="searchInput"
         placeholder="Search"
+        ref={searchInputRef}
         onChange={onSearch}
       />
       <Container className="navButton">
