@@ -7,7 +7,7 @@ const initialState = {
   people: [],
   status: "idle",
   searchPeople: [],
-  searchSpecie: [],
+  searchSpecies: [],
   searchPlanets: [],
   species: [],
   planets: [],
@@ -103,7 +103,7 @@ function ApiProvider({ children }) {
       previous,
       searchPeople,
       searchPlanets,
-      searchSpecie,
+      searchSpecies,
     },
     dispatch,
   ] = useReducer(reducer, initialState);
@@ -126,7 +126,7 @@ function ApiProvider({ children }) {
         previous,
         searchPeople,
         searchPlanets,
-        searchSpecie,
+        searchSpecies,
       }}
     >
       {children}

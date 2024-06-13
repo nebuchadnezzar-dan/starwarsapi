@@ -8,7 +8,7 @@ function useSidebar() {
     previous,
     dispatch,
     searchPeople,
-    searchSpecie,
+    searchSpecies,
     searchPlanets,
   } = useApi();
 
@@ -45,7 +45,7 @@ function useSidebar() {
         return el.name.toLowerCase().includes(event.target.value.toLowerCase());
       });
     if (active === "species")
-      filtered = searchSpecie.filter((el) => {
+      filtered = searchSpecies.filter((el) => {
         return el.name.toLowerCase().includes(event.target.value.toLowerCase());
       });
     if (active === "planets")
