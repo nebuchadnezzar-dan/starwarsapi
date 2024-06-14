@@ -7,17 +7,7 @@ import Container from "../ui/Container";
 import StatusMessage from "../ui/StatusMessage";
 
 const Display = () => {
-  const {
-    activeId,
-    specie,
-    people,
-    dispStatus,
-    active,
-    species,
-    homeworld,
-    planets,
-    residents,
-  } = useApi();
+  const { dispStatus, active, activeDisplay } = useApi();
   const {
     height,
     mass,
@@ -27,7 +17,9 @@ const Display = () => {
     birth_year,
     gender,
     name: personName,
-  } = { ...people.at(activeId) };
+    species: peopleSpecies,
+    homeworld: peopleHomeworld,
+  } = { ...activeDisplay };
   const {
     average_height,
     average_lifespan,
@@ -38,7 +30,8 @@ const Display = () => {
     language,
     skin_colors,
     name: specieName,
-  } = { ...species.at(activeId) };
+    homeworld: specieHomeworld,
+  } = { ...activeDisplay };
   const {
     rotation_period,
     orbital_period,
@@ -49,13 +42,13 @@ const Display = () => {
     surface_water,
     population,
     name: planetName,
-  } = { ...planets.at(activeId) };
-  // console.log({ ...people.at(activeId) });
+    residents,
+  } = { ...activeDisplay };
 
   return dispStatus === "loading" ? (
     <LoadingRipple />
   ) : (
-    activeId !== null && (
+    activeDisplay !== null && (
       <Container className="display">
         {active === "people" && dispStatus === "fetched" && (
           <DisplayContainers
@@ -71,8 +64,8 @@ const Display = () => {
               { label: "mass", labelValue: mass },
               { label: "hair color", labelValue: hair_color },
               { label: "skin color", labelValue: skin_color },
-              { label: "species", labelValue: specie },
-              { label: "homeworld", labelValue: homeworld },
+              { label: "species", labelValue: peopleSpecies },
+              { label: "homeworld", labelValue: peopleHomeworld },
             ]}
           />
         )}
@@ -91,7 +84,7 @@ const Display = () => {
               { label: "hair colors", labelValue: hair_colors },
               { label: "language", labelValue: language },
               { label: "skin colors", labelValue: skin_colors },
-              { label: "homeworld", labelValue: homeworld },
+              { label: "homeworld", labelValue: specieHomeworld },
             ]}
           />
         )}
@@ -112,15 +105,16 @@ const Display = () => {
               { label: "population", labelValue: population },
               {
                 label: "residents",
-                labelValue: residents
-                  ? residents.map((el, i) => {
-                      if (i < residents.length - 1) {
-                        return el + ", ";
-                      } else {
-                        return el;
-                      }
-                    })
-                  : "no one special",
+                labelValue:
+                  residents.length > 0
+                    ? residents.map((el, i) => {
+                        if (i < residents.length - 1) {
+                          return el + ", ";
+                        } else {
+                          return el;
+                        }
+                      })
+                    : "no one special",
               },
             ]}
           />

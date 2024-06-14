@@ -1,11 +1,13 @@
 import { useApi } from "../contexts/ApiContext";
-import { asyncForEach, fetchData } from "../helpers/helpers";
+import { fetchData } from "../helpers/helpers";
 
 function useSingleFetch() {
   const { dispatch, people, species, planets, status, active, activeId } =
     useApi();
+
   async function displaySingleHandler(url, activePersonId, item) {
-    if (url === null) {
+    console.log(url === null || url.length === 0);
+    if (url === null || url.length === 0) {
       dispatch({ type: "api/noFetchingNeeded", payload: activePersonId });
       return;
     }
@@ -13,34 +15,20 @@ function useSingleFetch() {
 
     try {
       dispatch({ type: "api/singleFetching", payload: activePersonId });
-      const returnedHomeWorld = await fetchData(url);
-      if (returnedHomeWorld === "error") throw new Error("failed");
+      const returned = await url.map(async (link, i) => {
+        if (!link) return;
+        const returnedHomeWorld = await fetchData(link);
+        return returnedHomeWorld.name;
+      });
+      // returned.then((el) => console.log(el));
+      const newArr = await Promise.all(returned).then((values) => {
+        return values;
+      });
+      // console.log(newArr);
       dispatch({
         type: "api/singleFetched",
-        payload: { item, results: returnedHomeWorld.name },
+        payload: newArr,
       });
-    } catch (e) {
-      dispatch({ type: "api/failedSingleFetching" });
-    }
-  }
-
-  async function planetsFetchHandler(id) {
-    try {
-      const planet = planets.at(id);
-      let planetsResidents;
-      dispatch({ type: "api/singleFetching", payload: id });
-      if (planet.residents.length > 0) {
-        const residentArray = [];
-        await asyncForEach(planet.residents, async (num) => {
-          const resident = await fetchData(num);
-          if (resident === "error") throw new Error("failed");
-          residentArray.push(resident.name);
-        });
-        planetsResidents = residentArray;
-      } else {
-        planetsResidents = [];
-      }
-      dispatch({ type: "api/fetchPlanetResidents", payload: planetsResidents });
     } catch (e) {
       dispatch({ type: "api/failedSingleFetching" });
     }
@@ -48,7 +36,6 @@ function useSingleFetch() {
 
   return {
     displaySingleHandler,
-    planetsFetchHandler,
     people,
     species,
     planets,

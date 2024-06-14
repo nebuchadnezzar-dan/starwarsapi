@@ -10,15 +10,8 @@ import StatusMessage from "../ui/StatusMessage";
 import { useSingleFetch } from "../../hooks/useSingleFetch";
 
 const Gallery = ({ children }) => {
-  const {
-    displaySingleHandler,
-    planetsFetchHandler,
-    people,
-    species,
-    planets,
-    status,
-    active,
-  } = useSingleFetch();
+  const { displaySingleHandler, people, species, planets, status, active } =
+    useSingleFetch();
 
   return (
     <Container className="gallery">
@@ -69,7 +62,8 @@ const Gallery = ({ children }) => {
                 climate={planet.climate}
                 terrain={planet.terrain}
                 population={planet.population}
-                onDisplay={planetsFetchHandler}
+                onDisplay={displaySingleHandler}
+                residents={planet.residents}
               />
             ))}
           {status === "error" && (

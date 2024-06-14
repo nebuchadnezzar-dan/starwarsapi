@@ -12,7 +12,9 @@ const Badge = ({
   terrain,
   population,
   onDisplay,
+  residents,
 }) => {
+  // console.log(residents);
   return (
     <Container className="badge">
       <BadgeFace position="front" name={name} />
@@ -20,7 +22,7 @@ const Badge = ({
         position="back"
         name={name}
         callback={() => {
-          onDisplay(id);
+          onDisplay(residents, id);
         }}
       >
         <TextDescription

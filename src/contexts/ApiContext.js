@@ -12,14 +12,14 @@ const initialState = {
   species: [],
   planets: [],
   activeId: null,
+  activeDisplay: null,
   dispStatus: "idle",
-  homeworld: "",
-  specie: "",
-  residents: [],
   next: "",
   previous: "",
 };
 function reducer(state, action) {
+  const stateHandler = { ...state };
+
   switch (action.type) {
     case "api/fetching":
       return reducerHandler(state, {
@@ -47,11 +47,23 @@ function reducer(state, action) {
         activeId: action.payload,
       });
     case "api/singleFetched":
-      const stateHandler = { ...state };
-      stateHandler[action.payload.item] = action.payload.results;
-      stateHandler.specie =
-        action.payload.item === "homeworld" ? "N/A" : action.payload.results;
-      return reducerHandler(state, { ...stateHandler, dispStatus: "fetched" });
+      const newActiveDisplay =
+        state.active !== "planets"
+          ? {
+              ...state[state.active].at(state.activeId),
+              homeworld: action.payload.at(0),
+              species: action.payload.at(1),
+            }
+          : {
+              ...state[state.active].at(state.activeId),
+              residents: action.payload.length > 0,
+            };
+
+      return reducerHandler(state, {
+        ...stateHandler,
+        dispStatus: "fetched",
+        activeDisplay: newActiveDisplay,
+      });
 
     case "api/fetchPlanetResidents":
       return reducerHandler(state, {
@@ -63,8 +75,7 @@ function reducer(state, action) {
       return reducerHandler(state, {
         dispStatus: "fetched",
         activeId: action.payload,
-        homeworld: "N/A",
-        specie: "N/A",
+        activeDisplay: state[state.active][action.payload],
       });
 
     case "api/filter":
@@ -93,17 +104,15 @@ function ApiProvider({ children }) {
       species,
       planets,
       status,
-      homeworld,
-      specie,
       dispStatus,
       active,
-      residents,
       activeId,
       next,
       previous,
       searchPeople,
       searchPlanets,
       searchSpecies,
+      activeDisplay,
     },
     dispatch,
   ] = useReducer(reducer, initialState);
@@ -116,17 +125,15 @@ function ApiProvider({ children }) {
         dispatch,
         species,
         planets,
-        homeworld,
         dispStatus,
         activeId,
-        specie,
         active,
-        residents,
         next,
         previous,
         searchPeople,
         searchPlanets,
         searchSpecies,
+        activeDisplay,
       }}
     >
       {children}

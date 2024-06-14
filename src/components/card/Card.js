@@ -22,8 +22,7 @@ const Card = ({
       <CardProfile
         name={name}
         callback={() => {
-          onDisplay(homeWorld, id, "homeworld");
-          onDisplay(species.at(0), id, "specie");
+          onDisplay([homeWorld, ...species], id);
         }}
       >
         <TextDescription

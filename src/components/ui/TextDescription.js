@@ -5,7 +5,7 @@ function TextDescription({ label, labelClassName, orientation }) {
       <p>
         {label.map((lab) => (
           <React.Fragment key={lab.label}>
-            {lab.label}: <span>{lab.labelValue}</span>
+            {lab.label}: <span>{lab.labelValue || "N/A"}</span>
             <br />
           </React.Fragment>
         ))}
@@ -15,7 +15,7 @@ function TextDescription({ label, labelClassName, orientation }) {
     <div className={labelClassName}>
       {label.map((lab) => (
         <p key={lab.label}>
-          {lab.label}: <span>{lab.labelValue}</span>
+          {lab.label}:<span>{lab.labelValue || "N/A"}</span>
         </p>
       ))}
     </div>
