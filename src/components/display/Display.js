@@ -7,7 +7,7 @@ import Container from "../ui/Container";
 import StatusMessage from "../ui/StatusMessage";
 
 const Display = () => {
-  const { dispStatus, active, activeDisplay } = useApi();
+  const { dispStatus, activeDisplay } = useApi();
   const {
     height,
     mass,
@@ -50,7 +50,7 @@ const Display = () => {
   ) : (
     activeDisplay !== null && (
       <Container className="display">
-        {active === "people" && dispStatus === "fetched" && (
+        {activeDisplay.hasOwnProperty("gender") && dispStatus === "fetched" && (
           <DisplayContainers
             name={personName}
             set={4}
@@ -69,56 +69,58 @@ const Display = () => {
             ]}
           />
         )}
-        {active === "species" && dispStatus === "fetched" && (
-          <DisplayContainers
-            name={specieName}
-            set={3}
-            alt="profile"
-            labelClassName="dispContInfo"
-            label={[
-              { label: "average height", labelValue: average_height },
-              { label: "average lifespan", labelValue: average_lifespan },
-              { label: "classification", labelValue: classification },
-              { label: "designation", labelValue: designation },
-              { label: "eye colors", labelValue: eye_colors },
-              { label: "hair colors", labelValue: hair_colors },
-              { label: "language", labelValue: language },
-              { label: "skin colors", labelValue: skin_colors },
-              { label: "homeworld", labelValue: specieHomeworld },
-            ]}
-          />
-        )}
-        {active === "planets" && dispStatus === "fetched" && (
-          <DisplayContainers
-            name={planetName}
-            set={2}
-            alt="profile"
-            labelClassName="dispContInfo"
-            label={[
-              { label: "rotation period", labelValue: rotation_period },
-              { label: "orbital period", labelValue: orbital_period },
-              { label: "diameter", labelValue: diameter },
-              { label: "climate", labelValue: climate },
-              { label: "gravity", labelValue: gravity },
-              { label: "terrain", labelValue: terrain },
-              { label: "surface water", labelValue: surface_water },
-              { label: "population", labelValue: population },
-              {
-                label: "residents",
-                labelValue:
-                  residents.length > 0
-                    ? residents.map((el, i) => {
-                        if (i < residents.length - 1) {
-                          return el + ", ";
-                        } else {
-                          return el;
-                        }
-                      })
-                    : "no one special",
-              },
-            ]}
-          />
-        )}
+        {activeDisplay.hasOwnProperty("average_height") &&
+          dispStatus === "fetched" && (
+            <DisplayContainers
+              name={specieName}
+              set={3}
+              alt="profile"
+              labelClassName="dispContInfo"
+              label={[
+                { label: "average height", labelValue: average_height },
+                { label: "average lifespan", labelValue: average_lifespan },
+                { label: "classification", labelValue: classification },
+                { label: "designation", labelValue: designation },
+                { label: "eye colors", labelValue: eye_colors },
+                { label: "hair colors", labelValue: hair_colors },
+                { label: "language", labelValue: language },
+                { label: "skin colors", labelValue: skin_colors },
+                { label: "homeworld", labelValue: specieHomeworld },
+              ]}
+            />
+          )}
+        {activeDisplay.hasOwnProperty("rotation_period") &&
+          dispStatus === "fetched" && (
+            <DisplayContainers
+              name={planetName}
+              set={2}
+              alt="profile"
+              labelClassName="dispContInfo"
+              label={[
+                { label: "rotation period", labelValue: rotation_period },
+                { label: "orbital period", labelValue: orbital_period },
+                { label: "diameter", labelValue: diameter },
+                { label: "climate", labelValue: climate },
+                { label: "gravity", labelValue: gravity },
+                { label: "terrain", labelValue: terrain },
+                { label: "surface water", labelValue: surface_water },
+                { label: "population", labelValue: population },
+                {
+                  label: "residents",
+                  labelValue:
+                    residents.length > 0
+                      ? residents.map((el, i) => {
+                          if (i < residents.length - 1) {
+                            return el + ", ";
+                          } else {
+                            return el;
+                          }
+                        })
+                      : "no one special",
+                },
+              ]}
+            />
+          )}
         {dispStatus === "error" && (
           <StatusMessage>Failed! please reload and try again</StatusMessage>
         )}

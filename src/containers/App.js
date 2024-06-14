@@ -6,21 +6,22 @@ import Search from "../components/searchbar/Search";
 import Display from "../components/display/Display";
 import "./App.css";
 import { particleOptions } from "./particleOps";
+import Container from "../components/ui/Container";
 
 function App() {
   return (
-    <div>
+    <Container>
       <Particles className="particles" params={particleOptions} />
-      <div className="container">
+      <Container className="container">
         <Search />
-        <div className="content">
+        <Container className="content">
           <Sidebar />
           <Gallery>
             <Display />
           </Gallery>
-        </div>
-      </div>
-    </div>
+        </Container>
+      </Container>
+    </Container>
   );
   // }
 }

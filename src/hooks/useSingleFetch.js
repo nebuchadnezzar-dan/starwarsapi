@@ -6,7 +6,6 @@ function useSingleFetch() {
     useApi();
 
   async function displaySingleHandler(url, activePersonId, item) {
-    console.log(url === null || url.length === 0);
     if (url === null || url.length === 0) {
       dispatch({ type: "api/noFetchingNeeded", payload: activePersonId });
       return;
@@ -17,14 +16,14 @@ function useSingleFetch() {
       dispatch({ type: "api/singleFetching", payload: activePersonId });
       const returned = await url.map(async (link, i) => {
         if (!link) return;
-        const returnedHomeWorld = await fetchData(link);
-        return returnedHomeWorld.name;
+        const returnedData = await fetchData(link);
+        if (returnedData === "error") throw new Error("failed");
+
+        return returnedData.name;
       });
-      // returned.then((el) => console.log(el));
       const newArr = await Promise.all(returned).then((values) => {
         return values;
       });
-      // console.log(newArr);
       dispatch({
         type: "api/singleFetched",
         payload: newArr,

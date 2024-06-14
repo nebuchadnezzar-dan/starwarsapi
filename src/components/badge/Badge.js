@@ -14,7 +14,6 @@ const Badge = ({
   onDisplay,
   residents,
 }) => {
-  // console.log(residents);
   return (
     <Container className="badge">
       <BadgeFace position="front" name={name} />

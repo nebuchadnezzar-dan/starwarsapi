@@ -25,7 +25,7 @@ function reducer(state, action) {
       return reducerHandler(state, {
         status: "loading",
         active: action.payload,
-        activeId: null,
+        // activeId: null,
       });
 
     case "api/fetched":
@@ -63,12 +63,6 @@ function reducer(state, action) {
         ...stateHandler,
         dispStatus: "fetched",
         activeDisplay: newActiveDisplay,
-      });
-
-    case "api/fetchPlanetResidents":
-      return reducerHandler(state, {
-        dispStatus: "fetched",
-        residents: action.payload,
       });
 
     case "api/noFetchingNeeded":
