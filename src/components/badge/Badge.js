@@ -1,5 +1,8 @@
-import React from 'react';
-import './badge.css';
+import React from "react";
+import "./badge.css";
+import BadgeFace from "./BadgeFace";
+import TextDescription from "../ui/TextDescription";
+import Container from "../ui/Container";
 
 const Badge = ({
   id,
@@ -8,39 +11,30 @@ const Badge = ({
   climate,
   terrain,
   population,
-  onDisplay
+  onDisplay,
+  residents,
 }) => {
   return (
-    <div className="badge">
-      <div className="badge-side badge-container--front">
-        <img
-          src={`https://robohash.org/${name}?set=set2`}
-          className="badge-image"
-          alt="badge-img"
+    <Container className="badge">
+      <BadgeFace position="front" name={name} />
+      <BadgeFace
+        position="back"
+        name={name}
+        callback={() => {
+          onDisplay(residents, id);
+        }}
+      >
+        <TextDescription
+          label={[
+            { label: "diameter", labelValue: diameter },
+            { label: "climate", labelValue: climate },
+            { label: "terrain", labelValue: terrain },
+            { label: "population", labelValue: population },
+          ]}
+          orientation="badge"
         />
-        <p className="badge-text">{name}</p>
-      </div>
-      <div className="badge-side badge-container--back">
-        <div
-          className="planet-info"
-          onClick={() => {
-            onDisplay(id);
-          }}
-        >
-          <img
-            src={`https://robohash.org/${name}?set=set2`}
-            className="badge-image-back"
-            alt="badge-img"
-          />
-          <p>
-            diameter: <span>{diameter}</span> <br />
-            climate: <span>{climate}</span> <br />
-            terrain: <span>{terrain}</span> <br />
-            population: <span>{population}</span> <br />
-          </p>
-        </div>
-      </div>
-    </div>
+      </BadgeFace>
+    </Container>
   );
 };
 

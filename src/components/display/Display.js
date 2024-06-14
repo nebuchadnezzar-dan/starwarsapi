@@ -1,17 +1,13 @@
-import React from 'react';
-import './display.css';
+import React from "react";
+import "./display.css";
+import { useApi } from "../../contexts/ApiContext";
+import DisplayContainers from "./DisplayContainers";
+import LoadingRipple from "../ui/LoadingRipple";
+import Container from "../ui/Container";
+import StatusMessage from "../ui/StatusMessage";
 
-const Display = ({
-  dispPerson,
-  dispSpecie,
-  dispPlanet,
-  active,
-  personSpecie,
-  personHomeWorld,
-  speciesHomeWorld,
-  planetResidents,
-  dispLoading
-}) => {
+const Display = () => {
+  const { dispStatus, activeDisplay } = useApi();
   const {
     height,
     mass,
@@ -19,8 +15,11 @@ const Display = ({
     skin_color,
     eye_color,
     birth_year,
-    gender
-  } = dispPerson;
+    gender,
+    name: personName,
+    species: peopleSpecies,
+    homeworld: peopleHomeworld,
+  } = { ...activeDisplay };
   const {
     average_height,
     average_lifespan,
@@ -29,8 +28,10 @@ const Display = ({
     eye_colors,
     hair_colors,
     language,
-    skin_colors
-  } = dispSpecie;
+    skin_colors,
+    name: specieName,
+    homeworld: specieHomeworld,
+  } = { ...activeDisplay };
   const {
     rotation_period,
     orbital_period,
@@ -39,153 +40,92 @@ const Display = ({
     gravity,
     terrain,
     surface_water,
-    population
-  } = dispPlanet;
-  let name, homeworld, finalOutPut, specs, residents;
-  if (dispLoading) {
-    finalOutPut = '';
-  } else if (active === 'people' && dispLoading === false) {
-    specs = personSpecie;
-    name = dispPerson.name;
-    homeworld = personHomeWorld;
-    finalOutPut = (
-      <div className="dispContainer">
-        <figure className="dispContImg">
-          <img src={`https://robohash.org/${name}?set=set4`} alt="profile" />
-          <figcaption>{name}</figcaption>
-        </figure>
-        <div className="dispContInfo">
-          <p>
-            gender: <span>{gender}</span>
-          </p>
-          <p>
-            birth Year: <span>{birth_year}</span>
-          </p>
-          <p>
-            height: <span>{height}</span>
-          </p>
-          <p>
-            eye color: <span>{eye_color}</span>
-          </p>
-          <p>
-            mass: <span>{mass}</span>
-          </p>
-          <p>
-            hair color: <span>{hair_color}</span>
-          </p>
-          <p>
-            skin Color: <span>{skin_color}</span>
-          </p>
-          <p>
-            species: <span>{specs}</span>
-          </p>
-          <p>
-            homeworld: <span>{homeworld}</span>
-          </p>
-        </div>
-      </div>
-    );
-  } else if (active === 'species' && dispLoading === false) {
-    name = dispSpecie.name;
-    homeworld = speciesHomeWorld;
-    finalOutPut = (
-      <div className="dispContainer">
-        <figure className="dispContImg">
-          <img src={`https://robohash.org/${name}?set=set3`} alt="profile" />
-          <figcaption>{name}</figcaption>
-        </figure>
-        <div className="dispContInfo">
-          <p>
-            average height: <span>{average_height}</span>
-          </p>
-          <p>
-            average lifespan: <span>{average_lifespan}</span>
-          </p>
-          <p>
-            classification: <span>{classification}</span>
-          </p>
-          <p>
-            designation: <span>{designation}</span>
-          </p>
-          <p>
-            eye colors: <span>{eye_colors}</span>
-          </p>
-          <p>
-            hair colors: <span>{hair_colors}</span>
-          </p>
-          <p>
-            language: <span>{language}</span>
-          </p>
-          <p>
-            skin colors: <span>{skin_colors}</span>
-          </p>
-          <p>
-            homeworld: <span>{homeworld}</span>
-          </p>
-        </div>
-      </div>
-    );
-  } else if (active === 'planets' && dispLoading === false) {
-    name = dispPlanet.name;
-    residents = planetResidents;
-    finalOutPut = (
-      <div className="dispContainer">
-        <figure className="dispContImg">
-          <img src={`https://robohash.org/${name}?set=set2`} alt="profile" />
-          <figcaption>{name}</figcaption>
-        </figure>
-        <div className="dispContInfo">
-          <p>
-            rotation period: <span>{rotation_period}</span>
-          </p>
-          <p>
-            orbital period: <span>{orbital_period}</span>
-          </p>
-          <p>
-            diameter: <span>{diameter}</span>
-          </p>
-          <p>
-            climate: <span>{climate}</span>
-          </p>
-          <p>
-            gravity: <span>{gravity}</span>
-          </p>
-          <p>
-            terrain: <span>{terrain}</span>
-          </p>
-          <p>
-            surface water: <span>{surface_water}</span>
-          </p>
-          <p>
-            population: <span>{population}</span>
-          </p>
-          <p>
-            residents:{' '}
-            <span>
-              {residents ? residents.map((el, i) => {if(i < residents.length -1){
-                return el + ', '
-              } else {
-                return el;
-              }}) : 'no one special'}
-            </span>
-          </p>
-        </div>
-      </div>
-    );
-  }
-  return dispLoading ? (
-    <div className="lds-ripple">
-      <div />
-      <div />
-    </div>
+    population,
+    name: planetName,
+    residents,
+  } = { ...activeDisplay };
+
+  return dispStatus === "loading" ? (
+    <LoadingRipple />
   ) : (
-    <div
-      className={
-        dispPlanet || dispPerson || dispSpecie ? 'display' : 'displayLoading'
-      }
-    >
-      {dispPerson || dispSpecie || dispPlanet ? finalOutPut : ''}
-    </div>
+    activeDisplay !== null && (
+      <Container className="display">
+        {activeDisplay.hasOwnProperty("gender") && dispStatus === "fetched" && (
+          <DisplayContainers
+            name={personName}
+            set={4}
+            alt="profile"
+            labelClassName="dispContInfo"
+            label={[
+              { label: "gender", labelValue: gender },
+              { label: "birth Year", labelValue: birth_year },
+              { label: "height", labelValue: height },
+              { label: "eye color", labelValue: eye_color },
+              { label: "mass", labelValue: mass },
+              { label: "hair color", labelValue: hair_color },
+              { label: "skin color", labelValue: skin_color },
+              { label: "species", labelValue: peopleSpecies },
+              { label: "homeworld", labelValue: peopleHomeworld },
+            ]}
+          />
+        )}
+        {activeDisplay.hasOwnProperty("average_height") &&
+          dispStatus === "fetched" && (
+            <DisplayContainers
+              name={specieName}
+              set={3}
+              alt="profile"
+              labelClassName="dispContInfo"
+              label={[
+                { label: "average height", labelValue: average_height },
+                { label: "average lifespan", labelValue: average_lifespan },
+                { label: "classification", labelValue: classification },
+                { label: "designation", labelValue: designation },
+                { label: "eye colors", labelValue: eye_colors },
+                { label: "hair colors", labelValue: hair_colors },
+                { label: "language", labelValue: language },
+                { label: "skin colors", labelValue: skin_colors },
+                { label: "homeworld", labelValue: specieHomeworld },
+              ]}
+            />
+          )}
+        {activeDisplay.hasOwnProperty("rotation_period") &&
+          dispStatus === "fetched" && (
+            <DisplayContainers
+              name={planetName}
+              set={2}
+              alt="profile"
+              labelClassName="dispContInfo"
+              label={[
+                { label: "rotation period", labelValue: rotation_period },
+                { label: "orbital period", labelValue: orbital_period },
+                { label: "diameter", labelValue: diameter },
+                { label: "climate", labelValue: climate },
+                { label: "gravity", labelValue: gravity },
+                { label: "terrain", labelValue: terrain },
+                { label: "surface water", labelValue: surface_water },
+                { label: "population", labelValue: population },
+                {
+                  label: "residents",
+                  labelValue:
+                    residents.length > 0
+                      ? residents.map((el, i) => {
+                          if (i < residents.length - 1) {
+                            return el + ", ";
+                          } else {
+                            return el;
+                          }
+                        })
+                      : "no one special",
+                },
+              ]}
+            />
+          )}
+        {dispStatus === "error" && (
+          <StatusMessage>Failed! please reload and try again</StatusMessage>
+        )}
+      </Container>
+    )
   );
 };
 

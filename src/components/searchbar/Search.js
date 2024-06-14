@@ -1,54 +1,49 @@
-import React from 'react';
-import './search.css';
-import { ReactComponent as Logo } from '../../img/SVG/icons8-darth-vader.svg';
-import { ReactComponent as Left } from '../../img/SVG/arrow-left2.svg';
-import { ReactComponent as Right } from '../../img/SVG/arrow-right2.svg';
+import React from "react";
+import "./search.css";
+import { ReactComponent as Left } from "../../img/SVG/arrow-left2.svg";
+import { ReactComponent as Right } from "../../img/SVG/arrow-right2.svg";
+import Container from "../ui/Container";
+import LogoContainer from "../ui/LogoContainer";
+import SearchBarButtons from "../ui/SearchBarButtons";
+import PageNumber from "../ui/PageNumber";
+import { useSidebar } from "../../hooks/useSidebar";
 
-const Search = ({ onSearch, onClicked, next, previous, active, page }) => {
+const Search = () => {
+  const { next, previous, sideBarHandler, onSearch, searchInputRef } =
+    useSidebar();
+
   return (
-    <div>
-      <div className="searchContainer">
-        <div className="logo">
-          <Logo className="logo-icon" />
-          <p>Star Wars Wiki</p>
-        </div>
-        <input
-          type="text"
-          className="searchInput"
-          placeholder="Search"
-          onChange={onSearch}
-        />
-        <div className="navButton">
-          {previous ? (
-            <div
-              className="btn btn-previous"
-              onClick={onClicked}
-              data-url={previous}
-              data-active={active}
-            >
-              <Left className="arrow-icon arrow-icon--left" />
-              <p>Previous</p>
-            </div>
-          ) : (
-            ''
-          )}
-          <p className="page">{page}</p>
-          {next ? (
-            <div
-              className="btn btn-next"
-              onClick={onClicked}
-              data-url={next}
-              data-active={active}
-            >
-              <p>Next</p>
-              <Right className="arrow-icon arrow-icon--right" />
-            </div>
-          ) : (
-            ''
-          )}
-        </div>
-      </div>
-    </div>
+    <Container className="searchContainer">
+      <LogoContainer />
+      <input
+        type="text"
+        className="searchInput"
+        placeholder="Search"
+        ref={searchInputRef}
+        onChange={onSearch}
+      />
+      <Container className="navButton">
+        {previous && (
+          <SearchBarButtons
+            className="btn btn-previous"
+            callback={() => sideBarHandler(undefined, undefined, "prev")}
+            message="Previous"
+            icon={<Left className="arrow-icon arrow-icon--left" />}
+            direction="left"
+          />
+        )}
+        <PageNumber next={next} previous={previous} />
+        {next && (
+          <SearchBarButtons
+            className="btn btn-next"
+            callback={() => sideBarHandler(undefined, undefined, "next")}
+            message="Next"
+            icon={<Right className="arrow-icon arrow-icon--right" />}
+            direction="right"
+          />
+        )}
+      </Container>
+    </Container>
   );
 };
 
