@@ -56,7 +56,7 @@ function reducer(state, action) {
             }
           : {
               ...state[state.active].at(state.activeId),
-              residents: action.payload.length > 0,
+              residents: action.payload,
             };
 
       return reducerHandler(state, {

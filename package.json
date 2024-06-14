@@ -3,15 +3,17 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "call-me-maybe": "^1.0.2",
     "eslint-utils": "^1.4.3",
     "gh-pages": "^5.0.0",
+    "glob-to-regexp": "^0.4.1",
     "kind-of": "^6.0.3",
     "lodash": "^4.17.21",
     "minimist": "^1.2.5",
     "mixin-deep": "^2.0.1",
     "react": "^16.13.0",
     "react-dom": "^16.13.0",
-    "react-particles-js": "^2.7.1",
+    "react-particles-js": "^2.4.2",
     "react-scripts": "3.0.1",
     "serialize-javascript": "^3.1.0",
     "set-value": "^3.0.3"
